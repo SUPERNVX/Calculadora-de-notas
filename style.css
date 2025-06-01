@@ -1,0 +1,573 @@
+/*
+ * Calculadora de Notas - Estilo Principal
+ * Versão otimizada e organizada
+ */
+
+/* ===== VARIÁVEIS CSS (TEMA CLARO) ===== */
+:root {
+    /* Cores primárias e secundárias */
+    --primary-color: #244a7b;
+    --primary-color-dark: #0056b3;
+    --secondary-color: #666666;
+    
+    /* Cores de estado */
+    --success-color: #28a745;
+    --danger-color: #dc3545;
+    --warning-color: #ffc107;
+    --info-color: #17a2b8;
+    
+    /* Cores de texto e fundo */
+    --bg-color: #eef2f5;
+    --card-bg: #ffffff;
+    --text-color: #333333;
+    --light-color: #f8f9fa;
+    --dark-color: #343a40;
+    
+    /* Inputs e controles */
+    --input-bg: #ffffff;
+    --input-border: #cccccc;
+    --input-focus-border: #244a7b;
+    --button-bg: #244a7b;
+    --button-text: #ffffff;
+    --danger-button-bg: #d43c49;
+    --danger-button-text: #ffffff;
+    
+    /* Áreas específicas */
+    --result-bg: #e9f5ff;
+    --control-bg: #f9f9f9;
+    
+    /* Notas projetadas e fixadas */
+    --projected-bg: #fff3cd;
+    --projected-border: #ffeeba;
+    --projected-text: #856404;
+    --fixed-input-bg: #e9ecef;
+    --fixed-input-border: #ced4da;
+    --fixed-projected-bg: #fffacd;
+    --fixed-projected-border: #fada5e;
+    
+    /* Mensagens e notificações */
+    --projection-message-bg: #fdfdfe;
+    --projection-message-border: #e3e3e3;
+    
+    /* Bordas e decorações */
+    --border-color: #dee2e6;
+    
+    /* Tipografia */
+    --font-family: 'Poppins', sans-serif;
+}
+
+/* ===== VARIÁVEIS CSS (TEMA ESCURO) ===== */
+[data-theme="dark"] {
+    /* Cores primárias e secundárias */
+    --primary-color: #4a8cd8; /* Azul mais claro e vibrante */
+    --secondary-color: #b0b0b0; /* Cinza mais claro para melhor legibilidade */
+    
+    /* Cores de texto e fundo */
+    --bg-color: #121212;
+    --card-bg: #1e1e1e;
+    --text-color: #f0f0f0; /* Texto quase branco para melhor contraste */
+    
+    /* Inputs e controles */
+    --input-bg: #252525; /* Campos de entrada mais escuros */
+    --input-border: #555555; /* Bordas de input mais visíveis */
+    --input-focus-border: #5a9ee5; /* Azul mais claro quando focado */
+    --button-bg: #4a8cd8; /* Botões mais claros */
+    --control-bg: #181818; /* Mais escuro que o card-bg */
+    
+    /* Áreas específicas */
+    --result-bg: #1a2a3a;
+    
+    /* Notas projetadas e fixadas */
+    --projected-bg: #332b00;
+    --projected-border: #665500;
+    --projected-text: #e0d0a0; /* Texto mais claro para melhor contraste */
+    --fixed-input-bg: #2a3a4a; /* Azul escuro para destacar que está fixado */
+    --fixed-input-border: #3a5a7a; /* Borda azulada mais visível */
+    --fixed-projected-bg: #3a3000;
+    --fixed-projected-border: #7a6500;
+    
+    /* Mensagens e notificações */
+    --projection-message-bg: #1e1e1e;
+    --projection-message-border: #444444; /* Bordas mais visíveis */
+    
+    /* Bordas e decorações */
+    --border-color: #444444; /* Bordas mais visíveis */
+}
+
+/* ===== RESET E ESTILOS BASE ===== */
+body {
+    font-family: var(--font-family);
+    line-height: 1.6;
+    margin: 0;
+    padding: 0;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    min-height: 100vh;
+    padding: 20px 0;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+/* ===== LAYOUT E CONTAINERS ===== */
+.app-container {
+    width: 95%;
+    max-width: 1200px;
+    background: var(--card-bg);
+    padding: 20px 30px;
+    border-radius: 12px;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+}
+
+.main-content {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+
+/* ===== CABEÇALHO E RODAPÉ ===== */
+.app-header {
+    text-align: center;
+    margin-bottom: 30px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+.header-text {
+    flex: 1;
+}
+
+.app-header h1 {
+    color: var(--primary-color);
+    margin-bottom: 5px;
+    font-weight: 700;
+}
+
+.app-header p {
+    font-size: 1.1em;
+    color: var(--secondary-color);
+}
+
+.app-footer {
+    text-align: center;
+    margin-top: 40px;
+    padding-top: 20px;
+    border-top: 1px solid var(--border-color);
+    font-size: 0.9em;
+    color: var(--secondary-color);
+}
+
+/* ===== SELETOR DE OBJETIVO ===== */
+.goal-selector-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 25px; 
+    padding: 15px;
+    background-color: var(--control-bg);
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+}
+
+.goal-selector-container label {
+    font-weight: 600;
+    color: var(--primary-color-dark);
+}
+
+.goal-selector-container select {
+    padding: 8px 12px;
+    border-radius: 6px;
+    border: 1px solid var(--border-color);
+    font-size: 1em;
+    flex-grow: 1; 
+    background-color: var(--input-bg);
+    color: var(--text-color);
+}
+
+.goal-selector-container select:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 0.2rem rgba(0,123,255,.25);
+    outline: none;
+}
+
+/* ===== GRID DE TRIMESTRES ===== */
+.trimesters-wrapper {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); 
+    gap: 25px;
+}
+
+/* ===== CARDS DE TRIMESTRE ===== */
+.trimester-card {
+    background-color: var(--card-bg);
+    padding: 25px;
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+    transition: transform 0.2s ease-in-out;
+    display: flex; 
+    flex-direction: column; 
+}
+
+.trimester-card:hover {
+    transform: translateY(-5px);
+}
+
+.trimester-card h2 {
+    color: var(--primary-color-dark);
+    margin-top: 0;
+    margin-bottom: 20px;
+    text-align: center;
+    font-size: 1.5em;
+    font-weight: 600;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 10px;
+}
+
+/* ===== GRID DE INPUTS ===== */
+.input-grid {
+    display: grid;
+    grid-template-columns: 1fr; 
+    gap: 15px; 
+    margin-bottom: 20px;
+    flex-grow: 1; 
+}
+
+@media (min-width: 380px) { 
+    .input-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 18px 15px; 
+    }
+}
+
+/* ===== GRUPOS DE INPUT ===== */
+.input-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.input-group label {
+    font-weight: 600;
+    margin-bottom: 6px;
+    font-size: 0.9em;
+    color: var(--secondary-color);
+    min-height: 1.2em; 
+}
+
+.input-field-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+/* ===== INPUTS NUMÉRICOS ===== */
+.input-field-wrapper input[type="number"] {
+    flex-grow: 1; 
+    padding: 10px 12px;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    font-size: 1em;
+    box-sizing: border-box;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+    min-width: 50px; 
+    width: 0; 
+    background-color: var(--input-bg);
+    color: var(--text-color);
+}
+
+.input-field-wrapper input[type="number"]:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 0.2rem rgba(0,123,255,.25);
+    outline: none;
+}
+
+.input-field-wrapper input[type="number"]::placeholder {
+    color: #aaa;
+}
+
+/* ===== INPUTS FIXADOS ===== */
+.input-field-wrapper input[type="number"].is-fixed {
+    background-color: var(--fixed-input-bg);
+    border-color: var(--fixed-input-border);
+    color: var(--text-color);
+}
+
+/* ===== BOTÕES DE FIXAR ===== */
+.btn-fix {
+    padding: 9px 10px; 
+    font-size: 0.8em; 
+    font-weight: 500;
+    border-radius: 5px;
+    border: 1px solid transparent;
+    cursor: pointer;
+    transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+    white-space: nowrap; 
+    flex-shrink: 0; 
+    text-align: center;
+    background-color: var(--info-color);
+    color: white;
+    border-color: var(--info-color);
+}
+
+.btn-fix:hover {
+    background-color: #138496;
+    border-color: #117a8b;
+}
+
+.btn-fix.fixed-active {
+    background-color: var(--warning-color);
+    color: var(--dark-color);
+    border-color: #ffb703; 
+    font-weight: 600;
+}
+
+.btn-fix.fixed-active:hover {
+    background-color: #e0a800;
+    border-color: #d39e00;
+}
+
+/* ===== ÁREA DE RESULTADOS ===== */
+.result {
+    font-weight: 600;
+    font-size: 1.1em;
+    margin-top: auto; 
+    padding: 12px;
+    background-color: var(--result-bg);
+    border-left: 5px solid var(--primary-color);
+    border-radius: 0 4px 4px 0;
+}
+
+.result span {
+    font-weight: 700;
+}
+
+/* ===== ÁREA DE CONTROLES ===== */
+.controls {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-top: 10px; 
+    padding: 20px;
+    background-color: var(--control-bg);
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+}
+
+/* ===== BOTÕES GERAIS ===== */
+.btn {
+    padding: 12px 25px;
+    font-size: 1em;
+    font-weight: 600;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.1s ease;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.btn:hover {
+    transform: translateY(-2px);
+}
+
+.btn:active {
+    transform: translateY(0px);
+}
+
+.btn-primary { 
+    background-color: var(--primary-color); 
+}
+
+.btn-primary:hover { 
+    background-color: var(--primary-color-dark); 
+}
+
+.btn-danger { 
+    background-color: var(--danger-color); 
+}
+
+.btn-danger:hover { 
+    background-color: #c82333; 
+}
+
+/* ===== CARD DE RESULTADO GERAL ===== */
+.overall-result-card {
+    margin-top: 10px;
+    padding: 25px;
+    background-color: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+}
+
+.overall-result-card h3 {
+    color: var(--primary-color-dark);
+    margin-top: 0;
+    text-align: center;
+    font-size: 1.6em;
+    margin-bottom: 20px;
+}
+
+/* ===== RESUMO ANUAL ===== */
+.annual-summary {
+    display: flex;
+    flex-direction: column; 
+    align-items: center; 
+    gap: 10px; 
+    margin-bottom: 20px;
+    font-size: 1.1em;
+    padding: 15px;
+    background-color: var(--result-bg);
+    border-radius: 6px;
+}
+
+.annual-summary div { 
+    margin: 5px 0;
+    text-align: center;
+}
+
+.annual-summary span {
+    font-weight: 700;
+    display: inline-block; 
+    margin-left: 5px;
+}
+
+/* ===== ÁREA DE MENSAGENS DE PROJEÇÃO ===== */
+#projection_message_area {
+    margin-top: 20px;
+    padding: 15px;
+    background-color: var(--projection-message-bg);
+    border: 1px solid var(--projection-message-border);
+    border-radius: 6px;
+}
+
+#projection_message_area h4 {
+    margin-top: 0;
+    margin-bottom: 10px;
+    color: var(--secondary-color);
+    font-weight: 600;
+}
+
+#projection_message_content {
+    font-size: 0.95em;
+    color: var(--text-color);
+    line-height: 1.7;
+    min-height: 40px;
+}
+
+/* ===== NOTAS PROJETADAS ===== */
+.projected-grade { 
+    background-color: var(--projected-bg) !important; 
+    border-color: var(--projected-border) !important;
+    color: var(--projected-text); 
+}
+
+.projected-grade::placeholder {
+    color: #b38f3d;
+}
+
+.input-field-wrapper input[type="number"].is-fixed.projected-grade {
+    background-color: var(--fixed-projected-bg) !important; 
+    border-color: var(--fixed-projected-border) !important;
+}
+
+/* ===== BOTÃO DE ALTERNÂNCIA DE TEMA ===== */
+.theme-toggle {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 1.5rem;
+    padding: 5px;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--card-bg);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s;
+    position: relative;
+}
+
+.theme-toggle:hover {
+    background-color: var(--border-color);
+}
+
+.light-icon, .dark-icon {
+    position: absolute;
+    transition: opacity 0.3s, transform 0.3s;
+}
+
+.dark-icon {
+    opacity: 0;
+    transform: rotate(-90deg);
+}
+
+[data-theme="dark"] .light-icon {
+    opacity: 0;
+    transform: rotate(90deg);
+}
+
+[data-theme="dark"] .dark-icon {
+    opacity: 1;
+    transform: rotate(0);
+}
+
+/* ===== AJUSTES ESPECÍFICOS PARA O MODO ESCURO ===== */
+[data-theme="dark"] .trimester-card,
+[data-theme="dark"] .overall-result-card {
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+}
+
+/* Ajustes específicos para labels no modo escuro */
+[data-theme="dark"] .input-group label {
+    color: #d0d0d0; /* Labels muito mais claros no modo escuro */
+    font-weight: 600; /* Um pouco mais bold para destacar */
+}
+
+/* Ajustes para campos de entrada no modo escuro */
+[data-theme="dark"] .input-field-wrapper input[type="number"]::placeholder {
+    color: #777777; /* Placeholder mais visível */
+}
+
+/* Melhorar contraste dos botões de fixar no modo escuro */
+[data-theme="dark"] .btn-fix {
+    background-color: #333333;
+    color: #e0e0e0;
+    border-color: #555555;
+}
+
+[data-theme="dark"] .btn-fix:hover {
+    background-color: #444444;
+}
+
+[data-theme="dark"] .btn-fix.fixed-active {
+    background-color: #2a4d7a;
+    color: #ffffff;
+}
+
+/* Melhorar contraste dos títulos dos trimestres */
+[data-theme="dark"] .trimester-card h2 {
+    color: #4a8cd8; /* Azul mais claro e vibrante */
+    border-bottom-color: #444444; /* Borda mais visível */
+}
+
+/* Melhorar contraste da área de resultados */
+[data-theme="dark"] .result {
+    color: #e0e0e0;
+}
+
+[data-theme="dark"] .result span {
+    color: #4a8cd8; /* Destacar o resultado com azul mais claro */
+}
