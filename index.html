@@ -6,6 +6,7 @@
     <title>Calculadora de Notas Escolares Avançada</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
+    <meta name="description" content="Calculadora de notas escolares para ajudar estudantes a planejar e alcançar seus objetivos acadêmicos. Calcule médias trimestrais e anuais.">
 </head>
 <body>
     <div class="app-container">
@@ -23,77 +24,55 @@
         </header>
 
         <main class="main-content">
-            <div class="goal-selector-container">
-                <label for="goalSelector">Meta de Média Final:</label>
-                <select id="goalSelector">
-                    <option value="pass_year">Passar de ano (Soma trimestral >= 18)</option>
-                    <option value="6.0" selected>6.0 (Mínimo por trimestre)</option>
-                    <option value="7.0">7.0 (Boa nota por trimestre)</option>
-                    <option value="8.0">8.0 (Ótima nota por trimestre)</option>
+            <div class="selector-container">
+                <label for="yearSelector">Ano Escolar:</label>
+                <select id="yearSelector" class="form-select">
+                    <option value="" selected disabled>Selecione o ano...</option>
+                    <option value="fundamental_ii">Ensino Fundamental II</option>
+                    <option value="em_1">1º Ensino Médio</option>
+                    <option value="em_2">2º Ensino Médio</option>
+                    <option value="em_3">3º Ensino Médio</option>
                 </select>
             </div>
 
-            <div class="trimesters-wrapper">
-                <!-- Trimestre 1 -->
-                <div class="trimester-card" id="trim1_card">
-                    <h2>Trimestre 1</h2>
-                    <div class="input-grid" id="trim1">
-                        <div class="input-group"><label for="t1_at1">AT1 (Atividade 1):</label><div class="input-field-wrapper"><input type="number" id="t1_at1" step="0.01" min="0" max="10" placeholder="0.00"><button class="btn-fix" data-target-input="t1_at1">Fixar</button></div></div>
-                        <div class="input-group"><label for="t1_at2">AT2 (Atividade 2):</label><div class="input-field-wrapper"><input type="number" id="t1_at2" step="0.01" min="0" max="10" placeholder="0.00"><button class="btn-fix" data-target-input="t1_at2">Fixar</button></div></div>
-                        <div class="input-group"><label for="t1_at3">AT3 (Atividade 3):</label><div class="input-field-wrapper"><input type="number" id="t1_at3" step="0.01" min="0" max="10" placeholder="0.00"><button class="btn-fix" data-target-input="t1_at3">Fixar</button></div></div>
-                        <div class="input-group"><label for="t1_cr1">CR1 (Cidadania):</label><div class="input-field-wrapper"><input type="number" id="t1_cr1" step="0.01" min="0" max="10" placeholder="0.00"><button class="btn-fix" data-target-input="t1_cr1">Fixar</button></div></div>
-                        <div class="input-group"><label for="t1_av1">AV1 (Prova 1):</label><div class="input-field-wrapper"><input type="number" id="t1_av1" step="0.01" min="0" max="10" placeholder="0.00"><button class="btn-fix" data-target-input="t1_av1">Fixar</button></div></div>
-                        <div class="input-group"><label for="t1_av2">AV2 (Prova 2):</label><div class="input-field-wrapper"><input type="number" id="t1_av2" step="0.01" min="0" max="10" placeholder="0.00"><button class="btn-fix" data-target-input="t1_av2">Fixar</button></div></div>
-                        <div class="input-group"><label for="t1_bns">BNS (Bônus):</label><div class="input-field-wrapper"><input type="number" id="t1_bns" step="0.01" min="0" placeholder="0.00" value="0"><button class="btn-fix" data-target-input="t1_bns">Fixar</button></div></div>
-                    </div>
-                    <div class="result">Média Trimestral 1: <span id="t1_result">-</span></div>
-                </div>
+            <div id="subject-selector-container" class="selector-container hidden-subject-selector">
+                <label for="subjectSelector">Matéria:</label>
+                <select id="subjectSelector" class="form-select">
+                    <!-- Opções preenchidas pelo JS -->
+                </select>
+            </div>
 
-                <!-- Trimestre 2 -->
-                <div class="trimester-card" id="trim2_card">
-                    <h2>Trimestre 2</h2>
-                    <div class="input-grid" id="trim2">
-                        <div class="input-group"><label for="t2_at1">AT1 (Atividade 1):</label><div class="input-field-wrapper"><input type="number" id="t2_at1" step="0.01" min="0" max="10" placeholder="0.00"><button class="btn-fix" data-target-input="t2_at1">Fixar</button></div></div>
-                        <div class="input-group"><label for="t2_at2">AT2 (Atividade 2):</label><div class="input-field-wrapper"><input type="number" id="t2_at2" step="0.01" min="0" max="10" placeholder="0.00"><button class="btn-fix" data-target-input="t2_at2">Fixar</button></div></div>
-                        <div class="input-group"><label for="t2_at3">AT3 (Atividade 3):</label><div class="input-field-wrapper"><input type="number" id="t2_at3" step="0.01" min="0" max="10" placeholder="0.00"><button class="btn-fix" data-target-input="t2_at3">Fixar</button></div></div>
-                        <div class="input-group"><label for="t2_cr1">CR2 (Cidadania):</label><div class="input-field-wrapper"><input type="number" id="t2_cr1" step="0.01" min="0" max="10" placeholder="0.00"><button class="btn-fix" data-target-input="t2_cr1">Fixar</button></div></div>
-                        <div class="input-group"><label for="t2_av1">AV1 (Prova 1):</label><div class="input-field-wrapper"><input type="number" id="t2_av1" step="0.01" min="0" max="10" placeholder="0.00"><button class="btn-fix" data-target-input="t2_av1">Fixar</button></div></div>
-                        <div class="input-group"><label for="t2_av2">AV2 (Prova 2):</label><div class="input-field-wrapper"><input type="number" id="t2_av2" step="0.01" min="0" max="10" placeholder="0.00"><button class="btn-fix" data-target-input="t2_av2">Fixar</button></div></div>
-                        <div class="input-group"><label for="t2_bns">BNS (Bônus):</label><div class="input-field-wrapper"><input type="number" id="t2_bns" step="0.01" min="0" placeholder="0.00" value="0"><button class="btn-fix" data-target-input="t2_bns">Fixar</button></div></div>
-                    </div>
-                    <div class="result">Média Trimestral 2: <span id="t2_result">-</span></div>
-                </div>
+            <div class="selector-container">
+                <label for="goalSelector">Meta de Média Final:</label>
+                <select id="goalSelector">
+                    <option value="pass_year">Passar de ano (Soma trimestral >= 24)</option>
+                    <option value="6.0" selected>6.0 (Mínimo por trimestre)</option>
+                    <option value="7.0">7.0 (Boa nota por trimestre)</option>
+                    <option value="8.0">8.0 (Ótima nota por trimestre)</option>
+                    <option value="custom">Personalizada</option>
+                </select>
+                <input type="number" id="customGoalValue" class="form-input" step="0.01" min="0" max="10" placeholder="Ex: 7.5" style="display: none;">
+            </div>
 
-                <!-- Trimestre 3 -->
-                <div class="trimester-card" id="trim3_card">
-                    <h2>Trimestre 3</h2>
-                    <div class="input-grid" id="trim3">
-                        <div class="input-group"><label for="t3_at1">AT1 (Atividade 1):</label><div class="input-field-wrapper"><input type="number" id="t3_at1" step="0.01" min="0" max="10" placeholder="0.00"><button class="btn-fix" data-target-input="t3_at1">Fixar</button></div></div>
-                        <div class="input-group"><label for="t3_at2">AT2 (Atividade 2):</label><div class="input-field-wrapper"><input type="number" id="t3_at2" step="0.01" min="0" max="10" placeholder="0.00"><button class="btn-fix" data-target-input="t3_at2">Fixar</button></div></div>
-                        <div class="input-group"><label for="t3_at3">AT3 (Atividade 3):</label><div class="input-field-wrapper"><input type="number" id="t3_at3" step="0.01" min="0" max="10" placeholder="0.00"><button class="btn-fix" data-target-input="t3_at3">Fixar</button></div></div>
-                        <div class="input-group"><label for="t3_cr1">CR3 (Cidadania):</label><div class="input-field-wrapper"><input type="number" id="t3_cr1" step="0.01" min="0" max="10" placeholder="0.00"><button class="btn-fix" data-target-input="t3_cr1">Fixar</button></div></div>
-                        <div class="input-group"><label for="t3_av1">AV1 (Prova 1):</label><div class="input-field-wrapper"><input type="number" id="t3_av1" step="0.01" min="0" max="10" placeholder="0.00"><button class="btn-fix" data-target-input="t3_av1">Fixar</button></div></div>
-                        <div class="input-group"><label for="t3_av2">AV2 (Prova 2):</label><div class="input-field-wrapper"><input type="number" id="t3_av2" step="0.01" min="0" max="10" placeholder="0.00"><button class="btn-fix" data-target-input="t3_av2">Fixar</button></div></div>
-                        <div class="input-group"><label for="t3_bns">BNS (Bônus):</label><div class="input-field-wrapper"><input type="number" id="t3_bns" step="0.01" min="0" placeholder="0.00" value="0"><button class="btn-fix" data-target-input="t3_bns">Fixar</button></div></div>
-                    </div>
-                    <div class="result">Média Trimestral 3: <span id="t3_result">-</span></div>
-                </div>
+            <!-- O container dos trimestres agora está vazio e será preenchido pelo JavaScript -->
+            <div class="trimesters-wrapper" id="trimesters-wrapper">
+                <!-- Os cards dos trimestres serão inseridos aqui dinamicamente -->
             </div>
 
             <div class="controls">
-                <button id="calculateAll" class="btn btn-primary">Calcular Tudo / Projetar Notas</button>
+                <button id="calculateAll" class="btn btn-primary">Calcular / Projetar Notas</button>
                 <button id="clearAll" class="btn btn-danger">Limpar Tudo</button>
             </div>
 
             <div class="overall-result-card">
                 <h3>Resultado Anual Consolidado</h3>
                 <div class="annual-summary">
-                    <div>Soma das Médias Trimestrais: <span id="annual_sum">-</span></div>
-                    <div>Status Geral: <span id="annual_status">-</span></div>
+                    <div>Soma das Médias Trimestrais: <span id="annual_sum" aria-live="polite">-</span></div>
+                    <div>Status Geral: <span id="annual_status" aria-live="polite">-</span></div>
                 </div>
                 <div id="projection_message_area">
                     <h4>Mensagens e Projeções:</h4>
-                    <div id="projection_message_content">Nenhuma projeção ainda. Preencha as notas e clique em calcular.</div>
+                    <div id="projection_message_content" aria-live="polite">Preencha as notas e clique em calcular.</div>
                 </div>
             </div>
         </main>

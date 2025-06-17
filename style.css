@@ -5,25 +5,18 @@
 
 /* ===== VARIÁVEIS CSS (TEMA CLARO) ===== */
 :root {
-    /* Cores primárias e secundárias */
     --primary-color: #244a7b;
     --primary-color-dark: #0056b3;
     --secondary-color: #666666;
-    
-    /* Cores de estado */
     --success-color: #28a745;
     --danger-color: #dc3545;
     --warning-color: #ffc107;
     --info-color: #17a2b8;
-    
-    /* Cores de texto e fundo */
     --bg-color: #eef2f5;
     --card-bg: #ffffff;
     --text-color: #333333;
     --light-color: #f8f9fa;
     --dark-color: #343a40;
-    
-    /* Inputs e controles */
     --input-bg: #ffffff;
     --input-border: #cccccc;
     --input-focus-border: #244a7b;
@@ -31,12 +24,8 @@
     --button-text: #ffffff;
     --danger-button-bg: #d43c49;
     --danger-button-text: #ffffff;
-    
-    /* Áreas específicas */
     --result-bg: #e9f5ff;
     --control-bg: #f9f9f9;
-    
-    /* Notas projetadas e fixadas */
     --projected-bg: #fff3cd;
     --projected-border: #ffeeba;
     --projected-text: #856404;
@@ -44,54 +33,35 @@
     --fixed-input-border: #ced4da;
     --fixed-projected-bg: #fffacd;
     --fixed-projected-border: #fada5e;
-    
-    /* Mensagens e notificações */
     --projection-message-bg: #fdfdfe;
     --projection-message-border: #e3e3e3;
-    
-    /* Bordas e decorações */
     --border-color: #dee2e6;
-    
-    /* Tipografia */
     --font-family: 'Poppins', sans-serif;
 }
 
 /* ===== VARIÁVEIS CSS (TEMA ESCURO) ===== */
 [data-theme="dark"] {
-    /* Cores primárias e secundárias */
-    --primary-color: #4a8cd8; /* Azul mais claro e vibrante */
-    --secondary-color: #b0b0b0; /* Cinza mais claro para melhor legibilidade */
-    
-    /* Cores de texto e fundo */
+    --primary-color: #4a8cd8;
+    --secondary-color: #b0b0b0;
     --bg-color: #121212;
     --card-bg: #1e1e1e;
-    --text-color: #f0f0f0; /* Texto quase branco para melhor contraste */
-    
-    /* Inputs e controles */
-    --input-bg: #252525; /* Campos de entrada mais escuros */
-    --input-border: #555555; /* Bordas de input mais visíveis */
-    --input-focus-border: #5a9ee5; /* Azul mais claro quando focado */
-    --button-bg: #4a8cd8; /* Botões mais claros */
-    --control-bg: #181818; /* Mais escuro que o card-bg */
-    
-    /* Áreas específicas */
+    --text-color: #f0f0f0;
+    --input-bg: #252525;
+    --input-border: #555555;
+    --input-focus-border: #5a9ee5;
+    --button-bg: #4a8cd8;
+    --control-bg: #181818;
     --result-bg: #1a2a3a;
-    
-    /* Notas projetadas e fixadas */
     --projected-bg: #332b00;
     --projected-border: #665500;
-    --projected-text: #e0d0a0; /* Texto mais claro para melhor contraste */
-    --fixed-input-bg: #2a3a4a; /* Azul escuro para destacar que está fixado */
-    --fixed-input-border: #3a5a7a; /* Borda azulada mais visível */
+    --projected-text: #e0d0a0;
+    --fixed-input-bg: #2a3a4a;
+    --fixed-input-border: #3a5a7a;
     --fixed-projected-bg: #3a3000;
     --fixed-projected-border: #7a6500;
-    
-    /* Mensagens e notificações */
     --projection-message-bg: #1e1e1e;
-    --projection-message-border: #444444; /* Bordas mais visíveis */
-    
-    /* Bordas e decorações */
-    --border-color: #444444; /* Bordas mais visíveis */
+    --projection-message-border: #444444;
+    --border-color: #444444;
 }
 
 /* ===== RESET E ESTILOS BASE ===== */
@@ -99,14 +69,13 @@ body {
     font-family: var(--font-family);
     line-height: 1.6;
     margin: 0;
-    padding: 0;
+    padding: 20px 0;
     background-color: var(--bg-color);
     color: var(--text-color);
     display: flex;
     justify-content: center;
     align-items: flex-start;
     min-height: 100vh;
-    padding: 20px 0;
     transition: background-color 0.3s, color 0.3s;
 }
 
@@ -141,9 +110,7 @@ body {
     width: 100%;
 }
 
-.header-text {
-    flex: 1;
-}
+.header-text { flex: 1; }
 
 .app-header h1 {
     color: var(--primary-color);
@@ -165,43 +132,62 @@ body {
     color: var(--secondary-color);
 }
 
-/* ===== SELETOR DE OBJETIVO ===== */
-.goal-selector-container {
+/* ===== CONTAINERS DE SELETORES (AGRUPADOS) ===== */
+.selector-container {
     display: flex;
     align-items: center;
-    gap: 10px;
-    margin-bottom: 25px; 
+    gap: 15px;
+    margin-bottom: 25px;
     padding: 15px;
     background-color: var(--control-bg);
     border-radius: 8px;
     border: 1px solid var(--border-color);
+    transition: max-height 0.3s ease-out, padding 0.3s ease-out, margin 0.3s ease-out, border-width 0.3s ease-out;
+    overflow: hidden;
 }
 
-.goal-selector-container label {
+.selector-container label {
     font-weight: 600;
     color: var(--primary-color-dark);
 }
 
-.goal-selector-container select {
+.selector-container select,
+.selector-container .form-input {
     padding: 8px 12px;
     border-radius: 6px;
     border: 1px solid var(--border-color);
     font-size: 1em;
-    flex-grow: 1; 
+    flex-grow: 1;
     background-color: var(--input-bg);
     color: var(--text-color);
 }
 
-.goal-selector-container select:focus {
+.selector-container select:focus,
+.selector-container .form-input:focus {
     border-color: var(--primary-color);
     box-shadow: 0 0 0 0.2rem rgba(0,123,255,.25);
     outline: none;
 }
 
+.selector-container .form-input {
+    flex-grow: 0;
+    max-width: 120px;
+    text-align: center;
+}
+
+.hidden-subject-selector {
+    max-height: 0 !important;
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+    margin-bottom: 0 !important;
+    border-width: 0 !important;
+    visibility: hidden;
+}
+
 /* ===== GRID DE TRIMESTRES ===== */
 .trimesters-wrapper {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); 
+    grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
     gap: 25px;
 }
 
@@ -213,8 +199,8 @@ body {
     border: 1px solid var(--border-color);
     box-shadow: 0 4px 15px rgba(0,0,0,0.05);
     transition: transform 0.2s ease-in-out;
-    display: flex; 
-    flex-direction: column; 
+    display: flex;
+    flex-direction: column;
 }
 
 .trimester-card:hover {
@@ -235,16 +221,16 @@ body {
 /* ===== GRID DE INPUTS ===== */
 .input-grid {
     display: grid;
-    grid-template-columns: 1fr; 
-    gap: 15px; 
+    grid-template-columns: 1fr;
+    gap: 15px;
     margin-bottom: 20px;
-    flex-grow: 1; 
+    flex-grow: 1;
 }
 
-@media (min-width: 380px) { 
+@media (min-width: 380px) {
     .input-grid {
         grid-template-columns: repeat(2, 1fr);
-        gap: 18px 15px; 
+        gap: 18px 15px;
     }
 }
 
@@ -259,7 +245,7 @@ body {
     margin-bottom: 6px;
     font-size: 0.9em;
     color: var(--secondary-color);
-    min-height: 1.2em; 
+    min-height: 1.2em;
 }
 
 .input-field-wrapper {
@@ -270,15 +256,15 @@ body {
 
 /* ===== INPUTS NUMÉRICOS ===== */
 .input-field-wrapper input[type="number"] {
-    flex-grow: 1; 
+    flex-grow: 1;
     padding: 10px 12px;
     border: 1px solid var(--border-color);
     border-radius: 6px;
     font-size: 1em;
     box-sizing: border-box;
     transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
-    min-width: 50px; 
-    width: 0; 
+    min-width: 50px;
+    width: 0;
     background-color: var(--input-bg);
     color: var(--text-color);
 }
@@ -302,15 +288,15 @@ body {
 
 /* ===== BOTÕES DE FIXAR ===== */
 .btn-fix {
-    padding: 9px 10px; 
-    font-size: 0.8em; 
+    padding: 9px 10px;
+    font-size: 0.8em;
     font-weight: 500;
     border-radius: 5px;
     border: 1px solid transparent;
     cursor: pointer;
     transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
-    white-space: nowrap; 
-    flex-shrink: 0; 
+    white-space: nowrap;
+    flex-shrink: 0;
     text-align: center;
     background-color: var(--info-color);
     color: white;
@@ -325,7 +311,7 @@ body {
 .btn-fix.fixed-active {
     background-color: var(--warning-color);
     color: var(--dark-color);
-    border-color: #ffb703; 
+    border-color: #ffb703;
     font-weight: 600;
 }
 
@@ -338,7 +324,7 @@ body {
 .result {
     font-weight: 600;
     font-size: 1.1em;
-    margin-top: auto; 
+    margin-top: auto;
     padding: 12px;
     background-color: var(--result-bg);
     border-left: 5px solid var(--primary-color);
@@ -355,7 +341,7 @@ body {
     gap: 15px;
     justify-content: center;
     flex-wrap: wrap;
-    margin-top: 10px; 
+    margin-top: 10px;
     padding: 20px;
     background-color: var(--control-bg);
     border-radius: 8px;
@@ -376,29 +362,12 @@ body {
     letter-spacing: 0.5px;
 }
 
-.btn:hover {
-    transform: translateY(-2px);
-}
-
-.btn:active {
-    transform: translateY(0px);
-}
-
-.btn-primary { 
-    background-color: var(--primary-color); 
-}
-
-.btn-primary:hover { 
-    background-color: var(--primary-color-dark); 
-}
-
-.btn-danger { 
-    background-color: var(--danger-color); 
-}
-
-.btn-danger:hover { 
-    background-color: #c82333; 
-}
+.btn:hover { transform: translateY(-2px); }
+.btn:active { transform: translateY(0px); }
+.btn-primary { background-color: var(--primary-color); }
+.btn-primary:hover { background-color: var(--primary-color-dark); }
+.btn-danger { background-color: var(--danger-color); }
+.btn-danger:hover { background-color: #c82333; }
 
 /* ===== CARD DE RESULTADO GERAL ===== */
 .overall-result-card {
@@ -421,9 +390,9 @@ body {
 /* ===== RESUMO ANUAL ===== */
 .annual-summary {
     display: flex;
-    flex-direction: column; 
-    align-items: center; 
-    gap: 10px; 
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
     margin-bottom: 20px;
     font-size: 1.1em;
     padding: 15px;
@@ -431,14 +400,14 @@ body {
     border-radius: 6px;
 }
 
-.annual-summary div { 
+.annual-summary div {
     margin: 5px 0;
     text-align: center;
 }
 
 .annual-summary span {
     font-weight: 700;
-    display: inline-block; 
+    display: inline-block;
     margin-left: 5px;
 }
 
@@ -466,10 +435,10 @@ body {
 }
 
 /* ===== NOTAS PROJETADAS ===== */
-.projected-grade { 
-    background-color: var(--projected-bg) !important; 
+.projected-grade {
+    background-color: var(--projected-bg) !important;
     border-color: var(--projected-border) !important;
-    color: var(--projected-text); 
+    color: var(--projected-text);
 }
 
 .projected-grade::placeholder {
@@ -477,7 +446,7 @@ body {
 }
 
 .input-field-wrapper input[type="number"].is-fixed.projected-grade {
-    background-color: var(--fixed-projected-bg) !important; 
+    background-color: var(--fixed-projected-bg) !important;
     border-color: var(--fixed-projected-border) !important;
 }
 
@@ -530,44 +499,19 @@ body {
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
 }
 
-/* Ajustes específicos para labels no modo escuro */
 [data-theme="dark"] .input-group label {
-    color: #d0d0d0; /* Labels muito mais claros no modo escuro */
-    font-weight: 600; /* Um pouco mais bold para destacar */
+    color: #d0d0d0;
 }
 
-/* Ajustes para campos de entrada no modo escuro */
 [data-theme="dark"] .input-field-wrapper input[type="number"]::placeholder {
-    color: #777777; /* Placeholder mais visível */
+    color: #777777;
 }
 
-/* Melhorar contraste dos botões de fixar no modo escuro */
-[data-theme="dark"] .btn-fix {
-    background-color: #333333;
-    color: #e0e0e0;
-    border-color: #555555;
-}
-
-[data-theme="dark"] .btn-fix:hover {
-    background-color: #444444;
-}
-
-[data-theme="dark"] .btn-fix.fixed-active {
-    background-color: #2a4d7a;
-    color: #ffffff;
-}
-
-/* Melhorar contraste dos títulos dos trimestres */
 [data-theme="dark"] .trimester-card h2 {
-    color: #4a8cd8; /* Azul mais claro e vibrante */
-    border-bottom-color: #444444; /* Borda mais visível */
+    color: #4a8cd8;
+    border-bottom-color: #444444;
 }
 
-/* Melhorar contraste da área de resultados */
 [data-theme="dark"] .result {
     color: #e0e0e0;
-}
-
-[data-theme="dark"] .result span {
-    color: #4a8cd8; /* Destacar o resultado com azul mais claro */
 }
