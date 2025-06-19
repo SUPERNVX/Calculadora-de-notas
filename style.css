@@ -6,12 +6,18 @@
 /* ===== VARIÁVEIS CSS (TEMA CLARO) ===== */
 :root {
     --primary-color: #244a7b;
-    --primary-color-dark: #0056b3;
+    --primary-color-dark: #0056b3; /* Usada em .btn-primary:hover */
+    --primary-color-focus-shadow: rgba(36, 74, 123, .25); /* Sombra para foco, derivada de primary-color */
+
     --secondary-color: #666666;
     --success-color: #28a745;
     --danger-color: #dc3545;
+    --danger-color-hover: #c82333; /* Para .btn-danger:hover */
     --warning-color: #ffc107;
+    --warning-color-active-border: #ffb703; /* Para borda de .btn-fix.fixed-active */
+    --warning-color-hover: #e0a800; /* Para hover de .btn-fix.fixed-active */
     --info-color: #17a2b8;
+    --info-color-hover: #138496; /* Para .btn-fix:hover */
     --bg-color: #eef2f5;
     --card-bg: #ffffff;
     --text-color: #333333;
@@ -42,13 +48,15 @@
 /* ===== VARIÁVEIS CSS (TEMA ESCURO) ===== */
 [data-theme="dark"] {
     --primary-color: #4a8cd8;
+    --primary-color-dark: #2a6cb8; /* Equivalente escuro para .btn-primary:hover */
+    --primary-color-focus-shadow: rgba(74, 140, 216, .25); /* Sombra para foco no tema escuro */
     --secondary-color: #b0b0b0;
     --bg-color: #121212;
     --card-bg: #1e1e1e;
     --text-color: #f0f0f0;
     --input-bg: #252525;
     --input-border: #555555;
-    --input-focus-border: #5a9ee5;
+    --input-focus-border: #5a9ee5; /* Já é uma cor de foco, mas o box-shadow será da primária */
     --button-bg: #4a8cd8;
     --control-bg: #181818;
     --result-bg: #1a2a3a;
@@ -62,6 +70,12 @@
     --projection-message-bg: #1e1e1e;
     --projection-message-border: #444444;
     --border-color: #444444;
+
+    /* Se as cores base de info, warning, danger não mudam no tema escuro,
+       as variações :hover de :root serão usadas. Se elas mudassem,
+       precisaríamos de --info-color-hover, etc., específicos para o tema escuro.
+       Por agora, vamos assumir que as de :root são aceitáveis.
+    */
 }
 
 /* ===== RESET E ESTILOS BASE ===== */
@@ -165,7 +179,7 @@ body {
 .selector-container select:focus,
 .selector-container .form-input:focus {
     border-color: var(--primary-color);
-    box-shadow: 0 0 0 0.2rem rgba(0,123,255,.25);
+    box-shadow: 0 0 0 0.2rem var(--primary-color-focus-shadow);
     outline: none;
 }
 
@@ -175,12 +189,12 @@ body {
     text-align: center;
 }
 
-.hidden-subject-selector {
-    max-height: 0 !important;
-    padding-top: 0 !important;
-    padding-bottom: 0 !important;
-    margin-bottom: 0 !important;
-    border-width: 0 !important;
+.selector-container.hidden-subject-selector {
+    max-height: 0; /* JS também define estilo inline para isso */
+    padding-top: 0;
+    padding-bottom: 0;
+    margin-bottom: 0;
+    border-width: 0;
     visibility: hidden;
 }
 
@@ -271,7 +285,7 @@ body {
 
 .input-field-wrapper input[type="number"]:focus {
     border-color: var(--primary-color);
-    box-shadow: 0 0 0 0.2rem rgba(0,123,255,.25);
+    box-shadow: 0 0 0 0.2rem var(--primary-color-focus-shadow);
     outline: none;
 }
 
@@ -292,7 +306,6 @@ body {
     font-size: 0.8em;
     font-weight: 500;
     border-radius: 5px;
-    border: 1px solid transparent;
     cursor: pointer;
     transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
     white-space: nowrap;
@@ -300,24 +313,24 @@ body {
     text-align: center;
     background-color: var(--info-color);
     color: white;
-    border-color: var(--info-color);
+    border: 1px solid var(--info-color);
 }
 
 .btn-fix:hover {
-    background-color: #138496;
-    border-color: #117a8b;
+    background-color: var(--info-color-hover);
+    border-color: var(--info-color-hover); /* Usando a mesma cor para simplificar */
 }
 
 .btn-fix.fixed-active {
     background-color: var(--warning-color);
     color: var(--dark-color);
-    border-color: #ffb703;
+    border-color: var(--warning-color-active-border);
     font-weight: 600;
 }
 
 .btn-fix.fixed-active:hover {
-    background-color: #e0a800;
-    border-color: #d39e00;
+    background-color: var(--warning-color-hover);
+    border-color: var(--warning-color-hover); /* Usando a mesma cor para simplificar */
 }
 
 /* ===== ÁREA DE RESULTADOS ===== */
@@ -365,9 +378,9 @@ body {
 .btn:hover { transform: translateY(-2px); }
 .btn:active { transform: translateY(0px); }
 .btn-primary { background-color: var(--primary-color); }
-.btn-primary:hover { background-color: var(--primary-color-dark); }
+.btn-primary:hover { background-color: var(--primary-color-dark); } /* Já usava variável */
 .btn-danger { background-color: var(--danger-color); }
-.btn-danger:hover { background-color: #c82333; }
+.btn-danger:hover { background-color: var(--danger-color-hover); }
 
 /* ===== CARD DE RESULTADO GERAL ===== */
 .overall-result-card {
@@ -435,24 +448,24 @@ body {
 }
 
 /* ===== NOTAS PROJETADAS ===== */
-.projected-grade {
-    background-color: var(--projected-bg) !important;
-    border-color: var(--projected-border) !important;
+.input-field-wrapper input[type="number"].projected-grade {
+    background-color: var(--projected-bg);
+    border-color: var(--projected-border);
     color: var(--projected-text);
 }
 
-.projected-grade::placeholder {
+/* Placeholder para notas projetadas, se precisar ser diferente */
+.input-field-wrapper input[type="number"].projected-grade::placeholder {
     color: #b38f3d;
 }
 
 .input-field-wrapper input[type="number"].is-fixed.projected-grade {
-    background-color: var(--fixed-projected-bg) !important;
-    border-color: var(--fixed-projected-border) !important;
+    background-color: var(--fixed-projected-bg);
+    border-color: var(--fixed-projected-border);
 }
 
 /* ===== BOTÃO DE ALTERNÂNCIA DE TEMA ===== */
 .theme-toggle {
-    background: none;
     border: none;
     cursor: pointer;
     font-size: 1.5rem;
