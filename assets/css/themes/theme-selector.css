@@ -1,0 +1,119 @@
+/*
+ * Calculadora de Notas - Seletor de Temas
+ */
+
+/* Adiciona um contexto de posicionamento para o dropdown */
+.theme-controls.left-controls {
+    position: relative;
+}
+
+.theme-selector {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: var(--card-bg);
+    border: 2px solid var(--primary-color);
+    color: var(--primary-color);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-right: 10px;
+}
+
+.theme-selector:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.2);
+}
+
+.theme-selector i {
+    font-size: 1.2rem;
+}
+
+.theme-dropdown {
+    position: absolute;
+    top: 20px; /* Alinha o topo do dropdown com o meio do botão (40px de altura / 2) */
+    left: 0;
+    transform: translateX(calc(-100% - 20px)); /* Posiciona à esquerda do botão com um espaçamento de 20px */
+    background-color: var(--card-bg);
+    border-radius: 8px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    padding: 10px;
+    z-index: 1000;
+    min-width: 180px;
+    display: none;
+}
+
+.theme-dropdown.show {
+    display: block;
+    animation: fadeInDropdown 0.3s ease;
+}
+
+.theme-option {
+    display: flex;
+    align-items: center;
+    padding: 8px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    margin-bottom: 5px;
+}
+
+.theme-option:last-child {
+    margin-bottom: 0;
+}
+
+.theme-option:hover {
+    background-color: var(--bg-color);
+}
+
+.theme-option.active {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+.theme-color-preview {
+    display: flex;
+    margin-right: 10px;
+}
+
+.theme-color-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    margin-right: 3px;
+}
+
+/* Cores específicas para cada tema */
+.theme-default .theme-color-dot:nth-child(1) {
+    background-color: #244a7b;
+}
+.theme-default .theme-color-dot:nth-child(2) {
+    background-color: #28a745;
+}
+.theme-default .theme-color-dot:nth-child(3) {
+    background-color: #dc3545;
+}
+
+.theme-modern .theme-color-dot:nth-child(1) { background-color: #00aaff; } 
+.theme-modern .theme-color-dot:nth-child(2) { background-color: #8855ff; } 
+.theme-modern .theme-color-dot:nth-child(3) { background-color: #0dcaf0; } 
+
+/* Cores para o tema Retrowave */
+.theme-retrowave .theme-color-dot:nth-child(1) { background-color: #ff00ff; } 
+.theme-retrowave .theme-color-dot:nth-child(2) { background-color: #00ffff; } 
+.theme-retrowave .theme-color-dot:nth-child(3) { background-color: #ffff00; } 
+
+
+@keyframes fadeInDropdown {
+    from {
+        opacity: 0;
+        transform: translateX(calc(-100% - 20px)) translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(calc(-100% - 20px)) translateY(0);
+    }
+}

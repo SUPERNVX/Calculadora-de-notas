@@ -1,0 +1,72 @@
+/*
+ * Calculadora de Notas - Tema Padrão
+ */
+
+/* ===== VARIÁVEIS CSS (TEMA CLARO) ===== */
+:root {
+    --primary-color: #244a7b;
+    --primary-color-dark: #0056b3; /* Usada em .btn-primary:hover */
+    --primary-color-focus-shadow: rgba(36, 74, 123, .25); /* Sombra para foco, derivada de primary-color */
+
+    --secondary-color: #666666;
+    --success-color: #28a745;
+    --danger-color: #dc3545;
+    --danger-color-hover: #c82333; /* Para .btn-danger:hover */
+    --warning-color: #ffc107;
+    --warning-color-active-border: #ffb703; /* Para borda de .btn-fix.fixed-active */
+    --warning-color-hover: #e0a800; /* Para hover de .btn-fix.fixed-active */
+    --info-color: #17a2b8;
+    --info-color-hover: #138496; /* Para .btn-fix:hover */
+    --bg-color: #eef2f5;
+    --card-bg: #ffffff;
+    --text-color: #333333;
+    --light-color: #f8f9fa;
+    --dark-color: #343a40;
+    --input-bg: #ffffff;
+    --input-border: #cccccc;
+    --input-focus-border: #244a7b;
+    --button-bg: #244a7b;
+    --button-text: #ffffff;
+    --danger-button-bg: #d43c49;
+    --danger-button-text: #ffffff;
+    --result-bg: #e9f5ff;
+    --control-bg: #f9f9f9;
+    --projected-bg: #fff3cd;
+    --projected-border: #ffeeba;
+    --projected-text: #856404;
+    --fixed-input-bg: #e9ecef;
+    --fixed-input-border: #ced4da;
+    --fixed-projected-bg: #fffacd;
+    --fixed-projected-border: #fada5e;
+    --projection-message-bg: #fdfdfe;
+    --projection-message-border: #e3e3e3;
+    --border-color: #dee2e6;
+    --font-family: 'Poppins', sans-serif;
+}
+
+/* ===== VARIÁVEIS CSS (TEMA ESCURO) ===== */
+[data-theme="dark"] {
+    --primary-color: #4a8cd8;
+    --primary-color-dark: #2a6cb8; /* Equivalente escuro para .btn-primary:hover */
+    --primary-color-focus-shadow: rgba(74, 140, 216, .25); /* Sombra para foco no tema escuro */
+    --secondary-color: #b0b0b0;
+    --bg-color: #121212;
+    --card-bg: #1e1e1e;
+    --text-color: #f0f0f0;
+    --input-bg: #252525;
+    --input-border: #555555;
+    --input-focus-border: #5a9ee5; /* Já é uma cor de foco, mas o box-shadow será da primária */
+    --button-bg: #4a8cd8;
+    --control-bg: #181818;
+    --result-bg: #1a2a3a;
+    --projected-bg: #332b00;
+    --projected-border: #665500;
+    --projected-text: #e0d0a0;
+    --fixed-input-bg: #2a3a4a;
+    --fixed-input-border: #3a5a7a;
+    --fixed-projected-bg: #3a3000;
+    --fixed-projected-border: #7a6500;
+    --projection-message-bg: #1e1e1e;
+    --projection-message-border: #444444;
+    --border-color: #444444;
+}

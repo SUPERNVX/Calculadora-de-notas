@@ -1,0 +1,1258 @@
+/*
+ * Calculadora de Notas - Estilo Principal
+ * Versão otimizada e organizada
+ */
+
+/* ===== VARIÁVEIS CSS (TEMA CLARO) ===== */
+:root {
+    --primary-color: #244a7b;
+    --primary-color-dark: #0056b3; /* Usada em .btn-primary:hover */
+    --primary-color-focus-shadow: rgba(36, 74, 123, .25); /* Sombra para foco, derivada de primary-color */
+
+    --secondary-color: #666666;
+    --success-color: #28a745;
+    --danger-color: #dc3545;
+    --danger-color-hover: #c82333; /* Para .btn-danger:hover */
+    --warning-color: #ffc107;
+    --warning-color-active-border: #ffb703; /* Para borda de .btn-fix.fixed-active */
+    --warning-color-hover: #e0a800; /* Para hover de .btn-fix.fixed-active */
+    --info-color: #17a2b8;
+    --info-color-hover: #138496; /* Para .btn-fix:hover */
+    --bg-color: #eef2f5;
+    --card-bg: #ffffff;
+    --text-color: #333333;
+    --light-color: #f8f9fa;
+    --dark-color: #343a40;
+    --input-bg: #ffffff;
+    --input-border: #cccccc;
+    --input-focus-border: #244a7b;
+    --button-bg: #244a7b;
+    --button-text: #ffffff;
+    --danger-button-bg: #d43c49;
+    --danger-button-text: #ffffff;
+    --result-bg: #e9f5ff;
+    --control-bg: #f9f9f9;
+    --projected-bg: #fff3cd;
+    --projected-border: #ffeeba;
+    --projected-text: #856404;
+    --fixed-input-bg: #e9ecef;
+    --fixed-input-border: #ced4da;
+    --fixed-projected-bg: #fffacd;
+    --fixed-projected-border: #fada5e;
+    --projection-message-bg: #fdfdfe;
+    --projection-message-border: #e3e3e3;
+    --border-color: #dee2e6;
+    --font-family: 'Poppins', sans-serif;
+}
+
+/* ===== VARIÁVEIS CSS (TEMA ESCURO) ===== */
+[data-theme="dark"] {
+    --primary-color: #4a8cd8;
+    --primary-color-dark: #2a6cb8; /* Equivalente escuro para .btn-primary:hover */
+    --primary-color-focus-shadow: rgba(74, 140, 216, .25); /* Sombra para foco no tema escuro */
+    --secondary-color: #b0b0b0;
+    --bg-color: #121212;
+    --card-bg: #1e1e1e;
+    --text-color: #f0f0f0;
+    --input-bg: #252525;
+    --input-border: #555555;
+    --input-focus-border: #5a9ee5; /* Já é uma cor de foco, mas o box-shadow será da primária */
+    --button-bg: #4a8cd8;
+    --control-bg: #181818;
+    --result-bg: #1a2a3a;
+    --projected-bg: #332b00;
+    --projected-border: #665500;
+    --projected-text: #e0d0a0;
+    --fixed-input-bg: #2a3a4a;
+    --fixed-input-border: #3a5a7a;
+    --fixed-projected-bg: #3a3000;
+    --fixed-projected-border: #7a6500;
+    --projection-message-bg: #1e1e1e;
+    --projection-message-border: #444444;
+    --border-color: #444444;
+
+    /* Se as cores base de info, warning, danger não mudam no tema escuro,
+       as variações :hover de :root serão usadas. Se elas mudassem,
+       precisaríamos de --info-color-hover, etc., específicos para o tema escuro.
+       Por agora, vamos assumir que as de :root são aceitáveis.
+    */
+}
+
+/* ===== RESET E ESTILOS BASE ===== */
+body {
+    font-family: var(--font-family);
+    line-height: 1.6;
+    margin: 0;
+    padding: 20px 0;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    min-height: 100vh;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+/* ===== LAYOUT E CONTAINERS ===== */
+.app-container {
+    width: 95%;
+    max-width: 1200px;
+    background: var(--card-bg);
+    padding: 20px 30px;
+    border-radius: 12px;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+}
+
+.main-content {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+
+/* ===== CABEÇALHO E RODAPÉ ===== */
+.app-header {
+    text-align: center;
+    margin-bottom: 30px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+.header-content .header-text {
+    flex: 1;
+    text-align: center;
+}
+
+.theme-controls {
+    display: flex;
+    align-items: center;
+}
+
+.left-controls {
+    margin-right: 15px;
+}
+
+.right-controls {
+    margin-left: 15px;
+}
+
+.header-content .theme-toggle {
+    margin-left: 10px;
+}
+
+.header-text { flex: 1; }
+
+.app-header h1 {
+    color: var(--primary-color);
+    margin-bottom: 5px;
+    font-weight: 700;
+}
+
+.app-header p {
+    font-size: 1.1em;
+    color: var(--secondary-color);
+}
+
+.app-footer {
+    text-align: center;
+    margin-top: 40px;
+    padding-top: 20px;
+    border-top: 1px solid var(--border-color);
+    font-size: 0.9em;
+    color: var(--secondary-color);
+}
+
+/* ===== CONTAINERS DE SELETORES (AGRUPADOS) ===== */
+.selector-container {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 25px;
+    padding: 15px;
+    background-color: var(--control-bg);
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+    transition: max-height 0.3s ease-out, padding 0.3s ease-out, margin 0.3s ease-out, border-width 0.3s ease-out;
+    overflow: hidden;
+}
+
+.selector-container label {
+    font-weight: 600;
+    color: var(--primary-color-dark);
+}
+
+.selector-container select,
+.selector-container .form-input {
+    padding: 8px 12px;
+    border-radius: 6px;
+    border: 1px solid var(--border-color);
+    font-size: 1em;
+    flex-grow: 1;
+    background-color: var(--input-bg);
+    color: var(--text-color);
+}
+
+.selector-container select:focus,
+.selector-container .form-input:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 0.2rem var(--primary-color-focus-shadow);
+    outline: none;
+}
+
+.selector-container .form-input {
+    flex-grow: 0;
+    max-width: 120px;
+    text-align: center;
+    padding: 8px 12px;
+    border: 1px solid var(--primary-color);
+    border-radius: 6px;
+    background-color: var(--input-bg);
+    color: var(--text-color);
+    font-weight: 600;
+    transition: all 0.3s ease;
+    box-shadow: 0 0 5px rgba(36, 74, 123, 0.2);
+}
+
+.selector-container .form-input:focus {
+    border-color: var(--primary-color-dark);
+    box-shadow: 0 0 8px rgba(36, 74, 123, 0.4);
+    outline: none;
+}
+
+/* Anima��o para o campo de meta personalizada */
+#customGoalValue {
+    opacity: 0;
+    transform: translateY(-10px);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+#customGoalValue.show-custom-goal {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.selector-container.hidden-subject-selector {
+    max-height: 0; /* JS também define estilo inline para isso */
+    padding-top: 0;
+    padding-bottom: 0;
+    margin-bottom: 0;
+    border-width: 0;
+    visibility: hidden;
+}
+
+/* ===== GRID DE TRIMESTRES ===== */
+.trimesters-wrapper {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+    gap: 25px;
+}
+
+/* ===== CARDS DE TRIMESTRE ===== */
+.trimester-card {
+    background-color: var(--card-bg);
+    padding: 25px;
+    border-radius: 12px;
+    border: 1px solid var(--border-color);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+    transition: all 0.3s ease-in-out;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    overflow: hidden;
+}
+
+.trimester-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+}
+
+.trimester-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 5px;
+    background: linear-gradient(90deg, var(--primary-color), var(--primary-color-dark));
+}
+
+.trimester-card h2 {
+    color: var(--primary-color-dark);
+    margin-top: 0;
+    margin-bottom: 15px;
+    text-align: center;
+    font-size: 1.5em;
+    font-weight: 600;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 10px;
+}
+
+/* Estilos para o toggle de m�dia direta */
+.direct-average-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 15px;
+    padding: 8px 0;
+    border-bottom: 1px dashed var(--border-color);
+    background-color: rgba(74, 140, 216, 0.05);
+    border-radius: 8px;
+    transition: all 0.3s ease;
+}
+
+.direct-average-toggle:hover {
+    background-color: rgba(74, 140, 216, 0.1);
+}
+
+.toggle-switch {
+    position: relative;
+    display: inline-block;
+    width: 50px;
+    height: 24px;
+    margin-right: 10px;
+}
+
+.toggle-switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.toggle-slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    transition: .4s;
+    border-radius: 24px;
+}
+
+.toggle-slider:before {
+    position: absolute;
+    content: "";
+    height: 16px;
+    width: 16px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    transition: .4s;
+    border-radius: 50%;
+}
+
+input:checked + .toggle-slider {
+    background-color: var(--primary-color);
+}
+
+input:focus + .toggle-slider {
+    box-shadow: 0 0 1px var(--primary-color);
+}
+
+input:checked + .toggle-slider:before {
+    transform: translateX(26px);
+}
+
+.toggle-label {
+    font-size: 0.9em;
+    color: var(--secondary-color);
+    font-weight: 500;
+}
+
+/* Estilos para o campo de m�dia direta */
+.direct-average-input {
+    margin-bottom: 15px;
+    padding: 15px;
+    background-color: var(--result-bg);
+    border-radius: 8px;
+    border-left: 4px solid var(--primary-color);
+    transition: all 0.3s ease;
+}
+
+.direct-average-input label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 10px;
+    color: var(--primary-color-dark);
+}
+
+.direct-average-input .input-field-wrapper {
+    display: flex;
+    justify-content: center;
+}
+
+.direct-average-input input[type="number"] {
+    width: 100px;
+    text-align: center;
+    font-size: 1.2em;
+    font-weight: 600;
+    padding: 10px;
+    border: 2px solid var(--primary-color);
+    transition: all 0.3s ease;
+    box-shadow: 0 0 5px rgba(36, 74, 123, 0.2);
+}
+
+.direct-average-input input[type="number"]:focus {
+    box-shadow: 0 0 10px rgba(36, 74, 123, 0.4);
+    transform: translateY(-2px);
+}
+
+/* Efeito de destaque enquanto digita */
+@keyframes highlight-typing {
+    0% { box-shadow: 0 0 5px rgba(36, 74, 123, 0.2); }
+    50% { box-shadow: 0 0 15px rgba(36, 74, 123, 0.5); }
+    100% { box-shadow: 0 0 5px rgba(36, 74, 123, 0.2); }
+}
+
+.direct-average-input input[type="number"]:focus {
+    animation: highlight-typing 1.5s infinite;
+}
+
+.direct-average-input input[type="number"].projected-grade {
+    background-color: var(--projected-bg);
+    border-color: var(--projected-border);
+    color: var(--projected-text);
+    font-weight: 700;
+    box-shadow: 0 0 8px rgba(255, 193, 7, 0.4);
+    animation: highlight-projected 1s ease-in-out;
+}
+
+/* ===== GRID DE INPUTS ===== */
+.input-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 15px;
+    margin-bottom: 20px;
+    flex-grow: 1;
+}
+
+@media (min-width: 380px) {
+    .input-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 18px 15px;
+    }
+}
+
+/* ===== GRUPOS DE INPUT ===== */
+.input-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.input-group label {
+    font-weight: 600;
+    margin-bottom: 6px;
+    font-size: 0.9em;
+    color: var(--secondary-color);
+    min-height: 1.2em;
+}
+
+.input-field-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+/* ===== INPUTS NUMÉRICOS ===== */
+.input-field-wrapper input[type="number"] {
+    flex-grow: 1;
+    padding: 10px 12px;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    font-size: 1em;
+    box-sizing: border-box;
+    transition: all 0.3s ease;
+    min-width: 50px;
+    width: 0;
+    background-color: var(--input-bg);
+    color: var(--text-color);
+}
+
+.input-field-wrapper input[type="number"]:hover {
+    border-color: var(--primary-color-dark);
+    transform: translateY(-1px);
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.input-field-wrapper input[type="number"]:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 0.2rem var(--primary-color-focus-shadow);
+    outline: none;
+    transform: translateY(-2px);
+}
+
+.input-field-wrapper input[type="number"]::placeholder {
+    color: #aaa;
+}
+
+/* ===== INPUTS FIXADOS ===== */
+.input-field-wrapper input[type="number"].is-fixed {
+    background-color: var(--fixed-input-bg);
+    border-color: var(--fixed-input-border);
+    color: var(--text-color);
+}
+
+/* ===== BOTÕES DE FIXAR ===== */
+.btn-fix {
+    padding: 9px 10px;
+    font-size: 0.8em;
+    font-weight: 500;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+    white-space: nowrap;
+    flex-shrink: 0;
+    text-align: center;
+    background-color: var(--info-color);
+    color: white;
+    border: 1px solid var(--info-color);
+}
+
+.btn-fix:hover {
+    background-color: var(--info-color-hover);
+    border-color: var(--info-color-hover); /* Usando a mesma cor para simplificar */
+}
+
+.btn-fix.fixed-active {
+    background-color: var(--warning-color);
+    color: var(--dark-color);
+    border-color: var(--warning-color-active-border);
+    font-weight: 600;
+}
+
+.btn-fix.fixed-active:hover {
+    background-color: var(--warning-color-hover);
+    border-color: var(--warning-color-hover); /* Usando a mesma cor para simplificar */
+}
+
+/* ===== ÁREA DE RESULTADOS ===== */
+.result {
+    font-weight: 600;
+    font-size: 1.1em;
+    margin-top: auto;
+    padding: 12px;
+    background-color: var(--result-bg);
+    border-left: 5px solid var(--primary-color);
+    border-radius: 0 4px 4px 0;
+    transition: all 0.3s ease;
+}
+
+.result span {
+    font-weight: 700;
+    transition: all 0.3s ease;
+}
+
+/* Anima��o para destacar a atualiza��o do resultado */
+@keyframes highlight-result {
+    0% { background-color: var(--result-bg); }
+    50% { background-color: rgba(74, 140, 216, 0.2); }
+    100% { background-color: var(--result-bg); }
+}
+
+.result-updated {
+    animation: highlight-result 1s ease-in-out;
+}
+
+@keyframes highlight-value {
+    0% { color: var(--text-color); }
+    50% { color: var(--primary-color); }
+    100% { color: var(--text-color); }
+}
+
+.value-updated {
+    animation: highlight-value 1s ease-in-out;
+}
+
+/* ===== ÁREA DE CONTROLES ===== */
+.controls {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-top: 10px;
+    padding: 20px;
+    background-color: var(--control-bg);
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+}
+
+/* ===== BOTÕES GERAIS ===== */
+.btn {
+    padding: 12px 25px;
+    font-size: 1em;
+    font-weight: 600;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.1s ease;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.btn:hover { transform: translateY(-2px); }
+.btn:active { transform: translateY(0px); }
+.btn-primary { background-color: var(--primary-color); }
+.btn-primary:hover { background-color: var(--primary-color-dark); } /* Já usava variável */
+.btn-danger { background-color: var(--danger-color); }
+.btn-danger:hover { background-color: var(--danger-color-hover); }
+.btn-secondary { background-color: var(--secondary-color); }
+.btn-secondary:hover { background-color: #555555; }
+.btn-info { background-color: var(--info-color); }
+.btn-info:hover { background-color: var(--info-color-hover); }
+.btn-success { background-color: var(--success-color); }
+.btn-success:hover { background-color: #218838; }
+
+/* Efeitos de feedback visual */
+.btn-clicked {
+    animation: button-pulse 0.3s ease-in-out;
+}
+
+@keyframes button-pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(0.95); }
+    100% { transform: scale(1); }
+}
+
+.card-reset {
+    animation: card-fade 0.5s ease-in-out;
+}
+
+@keyframes card-fade {
+    0% { opacity: 1; }
+    50% { opacity: 0.5; }
+    100% { opacity: 1; }
+}
+
+/* ===== CARD DE RESULTADO GERAL ===== */
+.overall-result-card {
+    margin-top: 20px;
+    padding: 30px;
+    background-color: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+.overall-result-card:hover {
+    box-shadow: 0 8px 30px rgba(0,0,0,0.12);
+}
+
+.overall-result-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 6px;
+    background: linear-gradient(90deg, var(--primary-color), var(--success-color));
+}
+
+.overall-result-card h3 {
+    color: var(--primary-color-dark);
+    margin-top: 0;
+    text-align: center;
+    font-size: 1.6em;
+    margin-bottom: 25px;
+    position: relative;
+    padding-bottom: 15px;
+}
+
+.overall-result-card h3::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80px;
+    height: 3px;
+    background-color: var(--primary-color);
+    border-radius: 3px;
+}
+
+/* ===== RESUMO ANUAL ===== */
+.annual-summary {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 25px;
+    font-size: 1.15em;
+    padding: 20px;
+    background-color: var(--result-bg);
+    border-radius: 10px;
+    box-shadow: inset 0 0 10px rgba(0,0,0,0.05);
+    transition: all 0.3s ease;
+}
+
+.annual-summary:hover {
+    box-shadow: inset 0 0 15px rgba(0,0,0,0.08);
+}
+
+.annual-summary div {
+    margin: 5px 0;
+    text-align: center;
+    width: 100%;
+    padding: 8px 0;
+    border-bottom: 1px dashed var(--border-color);
+}
+
+.annual-summary div:last-child {
+    border-bottom: none;
+}
+
+.annual-summary span {
+    font-weight: 700;
+    display: inline-block;
+    margin-left: 8px;
+    padding: 3px 10px;
+    background-color: var(--card-bg);
+    border-radius: 20px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    min-width: 60px;
+    text-align: center;
+    transition: all 0.3s ease;
+}
+
+/* Estilos para indicar se a meta personalizada foi atingida */
+.status-goal-met {
+    color: #28a745 !important;
+    text-shadow: 0 0 1px rgba(40, 167, 69, 0.3);
+    animation: pulse-success 2s infinite;
+}
+
+.status-goal-not-met {
+    color: #dc3545 !important;
+    text-shadow: 0 0 1px rgba(220, 53, 69, 0.3);
+    animation: pulse-danger 2s infinite;
+}
+
+/* Estilo para o container do status da meta */
+.custom-goal-status {
+    border-top: 1px dashed var(--border-color);
+    border-bottom: 1px dashed var(--border-color);
+    padding: 8px 0;
+    margin: 5px 0;
+    background-color: rgba(0, 0, 0, 0.03);
+}
+
+/* Estilos para os diferentes status */
+.status-approved {
+    color: #28a745 !important;
+    font-weight: 700;
+    text-shadow: 0 0 1px rgba(40, 167, 69, 0.3);
+    animation: pulse-success 2s infinite;
+}
+
+.status-recovery {
+    color: #dc3545 !important;
+    font-weight: 700;
+    text-shadow: 0 0 1px rgba(220, 53, 69, 0.3);
+    animation: pulse-danger 2s infinite;
+}
+
+.status-partial {
+    color: #ffc107 !important;
+    font-weight: 700;
+}
+
+@keyframes pulse-success {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+}
+
+@keyframes pulse-danger {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+}
+
+/* ===== ÁREA DE MENSAGENS DE PROJEÇÃO ===== */
+#projection_message_area {
+    margin-top: 25px;
+    padding: 20px;
+    background-color: var(--projection-message-bg);
+    border: 1px solid var(--projection-message-border);
+    border-radius: 10px;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.03);
+    transition: all 0.3s ease;
+}
+
+#projection_message_area:hover {
+    box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+}
+
+#projection_message_area h4 {
+    margin-top: 0;
+    margin-bottom: 15px;
+    color: var(--primary-color);
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    font-size: 1.1em;
+}
+
+#projection_message_area h4::before {
+    content: '💡';
+    margin-right: 8px;
+    font-size: 1.2em;
+}
+
+#projection_message_content {
+    font-size: 0.95em;
+    color: var(--text-color);
+    line-height: 1.8;
+    min-height: 40px;
+    padding: 5px;
+}
+
+#projection_message_content span {
+    display: block;
+    margin-bottom: 8px;
+    padding-left: 10px;
+    border-left: 3px solid var(--primary-color-dark);
+}
+
+#projection_message_content span.info-message {
+    background-color: rgba(74, 140, 216, 0.1);
+    padding: 10px 15px;
+    border-radius: 8px;
+    border-left: 4px solid var(--info-color);
+}
+
+/* ===== SEÇÃO DE ANÁLISE ESTATÍSTICA (Consolidado) ===== */
+.analytics-toggle {
+    margin-top: 25px;
+    text-align: center;
+}
+
+.analytics-section {
+    margin-top: 25px;
+    padding: 20px;
+    background-color: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+    transition: all 0.3s ease;
+}
+
+.analytics-section.show {
+    display: block;
+    animation: fadeIn 0.5s ease forwards;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.analytics-section h4 {
+    color: var(--primary-color);
+    margin-top: 0;
+    margin-bottom: 20px;
+    font-size: 1.3em;
+    text-align: center;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.charts-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+    margin-bottom: 25px;
+}
+
+.chart-wrapper {
+    background-color: var(--bg-color);
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.05);
+    height: 350px;
+    position: relative;
+}
+
+.chart-wrapper h5 {
+    margin-top: 0;
+    margin-bottom: 15px;
+    color: var(--secondary-color);
+    font-size: 1.1em;
+    text-align: center;
+}
+
+.stats-summary {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+    margin-top: 20px;
+}
+
+@media (min-width: 768px) {
+    .stats-summary {
+        grid-template-columns: repeat(4, 1fr);
+    }
+}
+
+.stat-item {
+    background-color: var(--result-bg);
+    padding: 15px;
+    border-radius: 8px;
+    text-align: center;
+    transition: transform 0.2s ease;
+}
+
+.stat-item:hover {
+    transform: translateY(-3px);
+}
+
+.stat-label {
+    font-weight: 600;
+    color: var(--secondary-color);
+    font-size: 0.9em;
+    margin-bottom: 5px;
+}
+
+.stat-value {
+    font-size: 1.2em;
+    font-weight: 700;
+    color: var(--primary-color);
+}
+
+/* Estilos para tendências (substituindo os baseados em ID) */
+.trend-up {
+    color: var(--success-color);
+}
+
+.trend-down {
+    color: var(--danger-color);
+}
+
+.trend-stable {
+    color: var(--warning-color);
+}
+
+/* ===== SEÇÃO DE COMPARTILHAMENTO (Consolidado) ===== */
+.share-section {
+    margin-top: 25px;
+    padding: 20px;
+    background-color: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
+    text-align: center;
+}
+
+.share-section h4 {
+    color: var(--primary-color);
+    margin-top: 0;
+    margin-bottom: 15px;
+}
+
+.share-options {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 15px;
+}
+
+.share-link-container {
+    margin-top: 20px;
+    padding: 15px;
+    background-color: var(--bg-color);
+    border-radius: 8px;
+    display: none;
+}
+
+.share-link-container.show {
+    display: block;
+    animation: fadeIn 0.5s ease forwards;
+}
+
+.share-link-input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid var(--border-color);
+    border-radius: 5px;
+    margin-bottom: 10px;
+    background-color: var(--input-bg);
+    color: var(--text-color);
+}
+
+.qr-code-container {
+    margin-top: 20px;
+    text-align: center;
+    display: none;
+}
+
+.qr-code-container.show {
+    display: block;
+    animation: fadeIn 0.5s ease forwards;
+}
+
+.qr-code-image {
+    max-width: 200px;
+    margin: 0 auto;
+    background-color: white;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+/* ===== NOTAS PROJETADAS ===== */
+.input-field-wrapper input[type="number"].projected-grade {
+    background-color: var(--projected-bg);
+    border-color: var(--projected-border);
+    color: var(--projected-text);
+    font-weight: 600;
+    box-shadow: 0 0 5px rgba(255, 193, 7, 0.3);
+    animation: highlight-projected 1s ease-in-out;
+    position: relative;
+}
+
+.input-field-wrapper input[type="number"].projected-grade::after {
+    content: "Projetado";
+    position: absolute;
+    top: -20px;
+    right: 0;
+    font-size: 10px;
+    background-color: var(--warning-color);
+    padding: 2px 5px;
+    border-radius: 3px;
+    color: #000;
+}
+
+/* Placeholder para notas projetadas, se precisar ser diferente */
+.input-field-wrapper input[type="number"].projected-grade::placeholder {
+    color: #b38f3d;
+}
+
+.input-field-wrapper input[type="number"].is-fixed.projected-grade {
+    background-color: var(--fixed-projected-bg);
+    border-color: var(--fixed-projected-border);
+}
+
+@keyframes highlight-projected {
+    0% { box-shadow: 0 0 5px rgba(255, 193, 7, 0.3); }
+    50% { box-shadow: 0 0 15px rgba(255, 193, 7, 0.6); }
+    100% { box-shadow: 0 0 5px rgba(255, 193, 7, 0.3); }
+}
+
+/* ===== BOTÃO DE ALTERNÂNCIA DE TEMA ===== */
+.theme-toggle, .theme-selector {
+    border: none;
+    cursor: pointer;
+    font-size: 1.5rem;
+    padding: 5px;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--card-bg);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s;
+    position: relative;
+}
+
+.theme-toggle:hover {
+    background-color: var(--border-color);
+}
+
+.light-icon, .dark-icon {
+    position: absolute;
+    transition: opacity 0.3s, transform 0.3s;
+}
+
+.dark-icon {
+    opacity: 0;
+    transform: rotate(-90deg);
+}
+
+[data-theme="dark"] .light-icon {
+    opacity: 0;
+    transform: rotate(90deg);
+}
+
+[data-theme="dark"] .dark-icon {
+    opacity: 1;
+    transform: rotate(0);
+}
+
+/* ===== AJUSTES ESPECÍFICOS PARA O MODO ESCURO ===== */
+[data-theme="dark"] .trimester-card,
+[data-theme="dark"] .overall-result-card {
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+}
+
+[data-theme="dark"] .input-group label {
+    color: #d0d0d0;
+}
+
+[data-theme="dark"] .input-field-wrapper input[type="number"]::placeholder {
+    color: #777777;
+}
+
+[data-theme="dark"] .trimester-card h2 {
+    color: #4a8cd8;
+    border-bottom-color: #444444;
+}
+
+[data-theme="dark"] .result {
+    color: #e0e0e0;
+}
+
+/* ===== TELA DE CARREGAMENTO ===== */
+.loading-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: var(--bg-color);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    transition: opacity 0.5s ease-out, visibility 0.5s ease-out;
+}
+
+.loading-screen.hidden {
+    opacity: 0;
+    visibility: hidden;
+}
+
+.loader {
+    width: 60px;
+    height: 60px;
+    border: 5px solid rgba(36, 74, 123, 0.2);
+    border-radius: 50%;
+    border-top-color: var(--primary-color);
+    animation: spin 1s ease-in-out infinite;
+    margin-bottom: 20px;
+}
+
+.loading-screen p {
+    color: var(--primary-color);
+    font-size: 1.2em;
+    font-weight: 500;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+/* ===== RESPONSIVIDADE MELHORADA ===== */
+@media (max-width: 768px) {
+    .app-container {
+        width: 100%;
+        padding: 15px;
+        border-radius: 8px;
+    }
+    
+    .header-content {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .header-text h1 {
+        font-size: 1.5rem;
+    }
+    
+    .theme-controls {
+        margin-top: 10px;
+        display: flex;
+        justify-content: center;
+    }
+    
+    .theme-toggle, .theme-selector {
+        margin-left: 5px;
+        margin-right: 5px;
+    }
+    
+    .selector-container {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .selector-container label {
+        margin-bottom: 5px;
+    }
+    
+    .selector-container select, 
+    .selector-container input {
+        width: 100%;
+    }
+    
+    .input-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .controls {
+        flex-direction: column;
+    }
+    
+    .controls button {
+        width: 100%;
+        margin: 5px 0;
+    }
+    
+    .input-field-wrapper {
+        flex-direction: row;
+    }
+    
+    .btn-fix {
+        min-width: 70px;
+    }
+    
+    .annual-summary {
+        padding: 10px;
+    }
+}
+
+@media (max-width: 480px) {
+    .app-header h1 {
+        font-size: 1.3rem;
+    }
+    
+    .app-header p {
+        font-size: 0.9rem;
+    }
+    
+    .trimester-card {
+        padding: 15px;
+    }
+    
+    .input-field-wrapper {
+        flex-direction: column;
+    }
+    
+    .input-field-wrapper input {
+        width: 100%;
+        margin-bottom: 5px;
+    }
+    
+    .btn-fix {
+        width: 100%;
+    }
+    
+    .result {
+        font-size: 0.95em;
+        padding: 10px;
+    }
+    
+    #projection_message_content {
+        font-size: 0.9em;
+    }
+}

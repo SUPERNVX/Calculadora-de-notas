@@ -1,0 +1,361 @@
+/*
+ * Tema: Retrowave
+ * Descrição: Um tema cyberpunk com cores neon, grids animados e efeitos de brilho.
+ */
+
+/* ===== ANIMAÇÕES GLOBAIS ===== */
+@keyframes neon-pulse {
+    0%, 100% { text-shadow: 0 0 5px #ff00ff, 0 0 10px #ff00ff, 0 0 20px #ff00ff, 0 0 30px #df00ff, 0 0 40px #df00ff; }
+    50% { text-shadow: 0 0 10px #ff00ff, 0 0 20px #ff00ff, 0 0 30px #ff00ff, 0 0 40px #df00ff, 0 0 50px #df00ff; }
+}
+
+@keyframes rotate-icon {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+@keyframes scan-border {
+    0% { top: -100%; }
+    100% { top: 100%; }
+}
+
+@keyframes hologram {
+    0% { transform: translateY(0) skew(0); opacity: 0.3; }
+    50% { transform: translateY(-10px) skew(-2deg); opacity: 0.1; }
+    100% { transform: translateY(0) skew(0); opacity: 0.3; }
+}
+
+@keyframes glitch {
+    0% { transform: translate(0); }
+    20% { transform: translate(-3px, 3px); }
+    40% { transform: translate(-3px, -3px); }
+    60% { transform: translate(3px, 3px); }
+    80% { transform: translate(3px, -3px); }
+    100% { transform: translate(0); }
+}
+
+@keyframes blink-cursor {
+    50% { border-color: transparent; }
+}
+
+/* ===== VARIÁVEIS DO TEMA ===== */
+:root {
+    --font-family: 'Orbitron', sans-serif;
+    --primary-color: #ff00ff; /* Rosa Neon */
+    --secondary-color: #00ffff; /* Ciano Neon */
+    --accent-color: #ffff00; /* Amarelo Neon */
+    --bg-color: #0c0030;
+    --text-color: #f0f0f0;
+    --text-color-darker: #a0a0a0;
+    --border-color: rgba(0, 255, 255, 0.5);
+    --card-bg: rgba(26, 0, 64, 0.75);
+    --input-bg: rgba(12, 0, 48, 0.8);
+    --control-bg: rgba(26, 0, 64, 0.6);
+
+    --neon-glow-primary: 0 0 8px rgba(255, 0, 255, 0.6), 0 0 16px rgba(255, 0, 255, 0.4);
+    --neon-glow-secondary: 0 0 8px rgba(0, 255, 255, 0.6), 0 0 16px rgba(0, 255, 255, 0.4);
+    --neon-text-shadow: 0 0 5px var(--primary-color), 0 0 10px var(--primary-color);
+}
+
+/* ===== ESTILOS BASE, GRID E SCANLINE ===== */
+body {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    font-family: var(--font-family);
+    position: relative;
+    overflow-x: hidden;
+}
+
+/* Efeito de Grid Animado */
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: 
+        linear-gradient(var(--secondary-color) 1px, transparent 1px),
+        linear-gradient(to right, var(--secondary-color) 1px, transparent 1px);
+    background-size: 40px 40px;
+    opacity: 0.1;
+    z-index: -2;
+    animation: move-grid 20s linear infinite;
+}
+
+@keyframes move-grid {
+    from { background-position: 0 0; }
+    to { background-position: 40px 80px; }
+}
+
+/* Efeito de Scanline */
+body::after {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: repeating-linear-gradient(
+        to bottom,
+        transparent 0,
+        rgba(0, 0, 0, 0.2) 2px,
+        transparent 4px
+    );
+    z-index: 9998;
+    pointer-events: none;
+    animation: scanline 8s linear infinite;
+}
+
+@keyframes scanline {
+    from { background-position: 0 0; }
+    to { background-position: 0 100%; }
+}
+
+.app-container {
+    background: transparent;
+    box-shadow: none;
+}
+
+/* ===== SCROLLBAR CUSTOMIZADA ===== */
+::-webkit-scrollbar { width: 12px; }
+::-webkit-scrollbar-track { background: var(--bg-color); }
+::-webkit-scrollbar-thumb {
+    background: var(--primary-color);
+    box-shadow: var(--neon-glow-primary);
+    border-radius: 6px;
+}
+
+/* ===== CABEÇALHO E TÍTULOS ===== */
+.app-header h1 {
+    color: var(--primary-color);
+    text-transform: uppercase;
+    letter-spacing: 4px;
+    font-weight: 900;
+    animation: neon-pulse 3s infinite ease-in-out;
+}
+.app-header p {
+    color: var(--secondary-color);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+/* ===== CARDS (Holográfico) ===== */
+.trimester-card, .overall-result-card, .selector-container, .controls {
+    background: var(--card-bg);
+    backdrop-filter: blur(3px);
+    border: 2px solid var(--primary-color);
+    box-shadow: var(--neon-glow-primary);
+    border-radius: 10px;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Efeito de borda escaneando */
+.trimester-card::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    background: linear-gradient(90deg, transparent, var(--secondary-color), transparent);
+    animation: scan-border 4s linear infinite;
+    box-shadow: var(--neon-glow-secondary);
+}
+
+/* Borda estática para o card de resultado anual */
+.overall-result-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+    box-shadow: var(--neon-glow-secondary);
+}
+
+/* Efeito holográfico */
+.trimester-card::after, .overall-result-card::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+        160deg,
+        rgba(0, 255, 255, 0.2) 0%,
+        rgba(0, 255, 255, 0) 30%,
+        rgba(255, 0, 255, 0) 70%,
+        rgba(255, 0, 255, 0.2) 100%
+    );
+    pointer-events: none;
+    animation: hologram 6s ease-in-out infinite;
+}
+
+.trimester-card h2, .overall-result-card h3 {
+    color: var(--primary-color);
+    text-shadow: var(--neon-text-shadow);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    border-bottom-color: var(--border-color);
+}
+
+/* ===== INPUTS E SELETORES ===== */
+.selector-container select, .selector-container .form-input,
+.input-field-wrapper input[type="number"], .share-link-input {
+    background-color: var(--input-bg);
+    border: 2px solid var(--secondary-color);
+    color: var(--secondary-color);
+    font-family: 'Orbitron', monospace;
+    border-radius: 4px;
+    box-shadow: inset 0 0 8px rgba(0, 255, 255, 0.3);
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.selector-container select:focus, .selector-container .form-input:focus,
+.input-field-wrapper input[type="number"]:focus, .share-link-input:focus {
+    outline: none;
+    box-shadow: var(--neon-glow-secondary), inset 0 0 8px rgba(0, 255, 255, 0.5);
+}
+
+/* Efeito de cursor piscando */
+.input-field-wrapper input[type="number"]:focus {
+    border-right: 2px solid var(--accent-color);
+    animation: blink-cursor 1s step-end infinite;
+}
+
+.input-field-wrapper input[type="number"].is-fixed {
+    border-color: var(--primary-color);
+    color: var(--primary-color);
+    box-shadow: inset 0 0 8px rgba(255, 0, 255, 0.3);
+}
+
+.input-field-wrapper input[type="number"].projected-grade {
+    border-color: var(--accent-color);
+    color: var(--accent-color);
+    box-shadow: inset 0 0 8px rgba(255, 255, 0, 0.3);
+}
+
+/* ===== BOTÕES (Estilo Arcade) ===== */
+.btn {
+    background: transparent;
+    border: 2px solid var(--primary-color);
+    color: var(--primary-color);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-weight: 700;
+    transition: all 0.3s ease;
+    text-shadow: 0 0 5px var(--primary-color);
+    box-shadow: 0 0 5px var(--primary-color);
+}
+
+.btn:hover {
+    background: var(--primary-color);
+    color: var(--bg-color);
+    box-shadow: var(--neon-glow-primary);
+    text-shadow: none;
+}
+
+.btn-primary { border-color: var(--primary-color); color: var(--primary-color); text-shadow: 0 0 5px var(--primary-color); box-shadow: 0 0 5px var(--primary-color); }
+.btn-primary:hover { background: var(--primary-color); color: var(--bg-color); box-shadow: var(--neon-glow-primary); }
+
+.btn-danger { border-color: #ff4f4f; color: #ff4f4f; text-shadow: 0 0 5px #ff4f4f; box-shadow: 0 0 5px #ff4f4f; }
+.btn-danger:hover { background: #ff4f4f; color: var(--bg-color); box-shadow: 0 0 8px #ff4f4f, 0 0 16px #ff4f4f; }
+
+.btn-secondary { border-color: var(--secondary-color); color: var(--secondary-color); text-shadow: 0 0 5px var(--secondary-color); box-shadow: 0 0 5px var(--secondary-color); }
+.btn-secondary:hover { background: var(--secondary-color); color: var(--bg-color); box-shadow: var(--neon-glow-secondary); }
+
+.btn-info { border-color: var(--secondary-color); color: var(--secondary-color); text-shadow: 0 0 5px var(--secondary-color); box-shadow: 0 0 5px var(--secondary-color); }
+.btn-info:hover { background: var(--secondary-color); color: var(--bg-color); box-shadow: var(--neon-glow-secondary); }
+
+.btn-fix {
+    border-color: var(--secondary-color);
+    color: var(--secondary-color);
+}
+.btn-fix.fixed-active {
+    background: var(--primary-color);
+    color: var(--bg-color);
+    box-shadow: var(--neon-glow-primary);
+}
+
+/* ===== RESULTADOS (Display Digital) ===== */
+.result {
+    background-color: var(--input-bg);
+    border-left: 5px solid var(--primary-color);
+    color: var(--primary-color);
+    text-shadow: 0 0 5px var(--primary-color);
+}
+
+.annual-summary {
+    background-color: rgba(0, 0, 0, 0.2);
+    border: 1px solid var(--border-color);
+    color: var(--text-color);
+}
+
+.annual-summary span {
+    background-color: var(--input-bg);
+    border: 1px solid var(--secondary-color);
+    box-shadow: inset 0 0 8px rgba(0, 255, 255, 0.3);
+    color: var(--secondary-color);
+}
+
+.status-approved { color: #00ff00 !important; text-shadow: 0 0 8px #00ff00; }
+.status-recovery { color: #ff4f4f !important; text-shadow: 0 0 8px #ff4f4f; }
+.status-partial { color: var(--accent-color) !important; text-shadow: 0 0 8px var(--accent-color); }
+
+/* ===== ÁREA DE MENSAGENS ===== */
+#projection_message_area {
+    background-color: var(--input-bg);
+    border: 1px solid var(--border-color);
+}
+
+#projection_message_content span {
+    border-left-color: var(--secondary-color);
+}
+
+/* ===== ANÁLISE GRÁFICA ===== */
+.chart-wrapper, .stat-item {
+    background-color: rgba(12, 0, 48, 0.5);
+    border: 1px solid var(--border-color);
+}
+.stat-value { color: var(--primary-color); }
+.trend-up { color: #00ff00; }
+.trend-down { color: #ff4f4f; }
+.trend-stable { color: var(--accent-color); }
+
+/* ===== TOGGLE DE TEMA ===== */
+.theme-toggle {
+    background: transparent;
+    border: 2px solid var(--secondary-color);
+    box-shadow: var(--neon-glow-secondary);
+}
+.theme-toggle .light-icon, .theme-toggle .dark-icon {
+    animation: rotate-icon 10s linear infinite;
+    color: var(--secondary-color);
+    text-shadow: 0 0 5px var(--secondary-color);
+}
+
+.theme-selector {
+    background: transparent;
+    border: 2px solid var(--primary-color);
+    box-shadow: var(--neon-glow-primary);
+    color: var(--primary-color);
+}
+
+.theme-dropdown {
+    background: var(--card-bg);
+    border: 2px solid var(--primary-color);
+    box-shadow: var(--neon-glow-primary);
+}
+
+.theme-option:hover {
+    background-color: rgba(255, 0, 255, 0.2);
+}
+
+.theme-option.active {
+    background-color: rgba(255, 0, 255, 0.4);
+    border-left: 4px solid var(--primary-color);
+}

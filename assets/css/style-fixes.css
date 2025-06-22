@@ -1,0 +1,26 @@
+/* Ajustes adicionais para o layout do cabeçalho */
+.left-controls .theme-dropdown {
+    left: 0;
+    right: auto;
+}
+
+.right-controls .theme-dropdown {
+    right: 0;
+    left: auto;
+}
+
+/* Ajuste para centralizar melhor o título */
+@media (max-width: 768px) {
+    .header-content {
+        flex-direction: column;
+    }
+    
+    .left-controls, .right-controls {
+        margin: 10px 0;
+    }
+    
+    .header-content .header-text {
+        order: -1;
+        margin-bottom: 15px;
+    }
+}
