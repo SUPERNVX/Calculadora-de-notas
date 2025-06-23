@@ -16,6 +16,14 @@ const themes = {
         name: 'Retrowave',
         file: 'assets/css/themes/retrowave-theme.css'
     },
+    soft_ui: {
+        name: 'Soft UI',
+        file: 'assets/css/themes/soft-ui-theme.css'
+    },
+    vaporwave: {
+        name: 'Vaporwave',
+        file: 'assets/css/themes/vaporwave-theme.css'
+    },
 };
 
 // Tema atual

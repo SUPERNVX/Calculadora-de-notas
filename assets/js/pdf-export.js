@@ -1,6 +1,6 @@
 // Função para exportar os resultados como PDF
 function exportToPDF() {
-    // Mostrar notificação de preparação
+    // Mostrar notificação de preparação (showToast é global de script.js)
     showToast('Preparando PDF...', 'info');
     
     // Coletar dados para o PDF
@@ -13,10 +13,12 @@ function exportToPDF() {
         goalText: DOM.goalSelector.options[DOM.goalSelector.selectedIndex].text,
         customGoal: DOM.customGoal.value,
         trimesterResults: [],
-        annualSum: DOM.annualSum.textContent,
-        annualStatus: DOM.annualStatus.textContent,
-        date: new Date().toLocaleDateString()
+        annualSum: DOM.annualSum.textContent, // DOM é global de script.js
+        annualStatus: DOM.annualStatus.textContent, // DOM é global de script.js
+        customGoalStatusHtml: document.getElementById('custom_goal_status').parentElement.style.display !== 'none' ? document.getElementById('custom_goal_status').innerHTML : null,
+        date: new Date().toLocaleDateString('pt-BR')
     };
+    const currentSubjectConfig = window.getSubjectConfig(data.subject, data.year); // getSubjectConfig é global de script.js
     
     // Estilos para o PDF
     const styles = `
@@ -24,87 +26,105 @@ function exportToPDF() {
             font-family: 'Arial', sans-serif;
             line-height: 1.6;
             color: #333;
-            margin: 20px;
+            margin: 15mm; /* Margens para o conteúdo */
         }
-        .header {
-            text-align: center;
+        .top-info-section {
             margin-bottom: 20px;
             padding-bottom: 10px;
-            border-bottom: 2px solid #244a7b;
+            border-bottom: 1px solid #eee;
         }
-        .header h1 {
+        .top-info-section p {
+            margin: 5px 0;
+            font-size: 1.1em;
+        }
+        .top-info-section strong {
             color: #244a7b;
-            margin-bottom: 5px;
         }
-        .info-section {
+        .trimesters-pdf-grid {
+            display: flex; /* Usa flexbox para layout horizontal */
+            justify-content: space-around; /* Distribui espaço uniformemente */
+            gap: 5mm; /* Espaçamento entre os cards */
+            flex-wrap: wrap; /* Permite quebrar linha se não couber */
             margin-bottom: 20px;
-            padding: 15px;
-            background-color: #f5f5f5;
-            border-radius: 5px;
         }
-        .info-item {
-            margin-bottom: 8px;
-        }
-        .info-label {
-            font-weight: bold;
-            display: inline-block;
-            width: 150px;
-        }
-        .trimester {
-            margin-bottom: 25px;
-            padding: 15px;
+        .trimester-pdf-card {
+            width: 60mm; /* Largura fixa para cada card (aprox. 1/3 da largura A4 - margens) */
+            padding: 8px;
             border: 1px solid #ddd;
             border-radius: 5px;
+            background-color: #f9f9f9;
+            box-sizing: border-box; /* Inclui padding e border na largura */
+            flex-shrink: 0; /* Impede que os cards encolham */
         }
-        .trimester h2 {
+        .trimester-pdf-card h4 {
+            text-align: center;
             color: #244a7b;
             margin-top: 0;
-            padding-bottom: 8px;
-            border-bottom: 1px solid #ddd;
+            margin-bottom: 5px;
+            font-size: 1.1em;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 5px;
         }
-        .grades-grid {
+        .grades-pdf-grid {
             display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 10px;
-            margin-bottom: 15px;
+            grid-template-columns: 1fr 1fr; /* 2 colunas para notas dentro do card */
+            gap: 3px;
+            font-size: 0.8em;
+            margin-bottom: 5px;
         }
-        .grade-item {
-            padding: 8px;
-            background-color: #f9f9f9;
-            border-radius: 3px;
+        .grade-pdf-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 2px 0;
         }
-        .grade-label {
+        .grade-pdf-label {
             font-weight: bold;
-            display: block;
-            font-size: 0.9em;
             color: #666;
         }
-        .grade-value {
-            font-size: 1.1em;
+        .grade-pdf-value {
             color: #333;
         }
         .fixed-grade {
             background-color: #e9ecef;
         }
-        .result {
-            font-weight: bold;
-            font-size: 1.2em;
-            padding: 10px;
-            background-color: #e9f5ff;
-            border-left: 5px solid #244a7b;
-            margin-top: 10px;
-        }
-        .annual-summary {
-            margin-top: 30px;
-            padding: 20px;
-            background-color: #f5f5f5;
-            border-radius: 5px;
+        .trim-result {
             text-align: center;
+            font-weight: bold;
+            font-size: 0.9em;
+            margin-top: 5px;
+            padding-top: 5px;
+            border-top: 1px solid #eee;
+        }
+        .trim-result span {
+            color: #244a7b;
+        }
+        .annual-summary-pdf {
+            margin-bottom: 20px;
+            padding: 15px;
+            background-color: #f5f5f5; /* Fundo para o resumo anual */
+            border-radius: 5px;
         }
         .annual-sum {
             font-size: 1.5em;
             font-weight: bold;
             margin-bottom: 10px;
+        }
+        .annual-summary-pdf h3 {
+            color: #244a7b;
+            margin-top: 0;
+            margin-bottom: 15px;
+            text-align: center;
+            font-size: 1.3em;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 10px;
+        }
+        .annual-summary-pdf p {
+            margin: 5px 0;
+            font-size: 1.1em;
+        }
+        .annual-summary-pdf span {
+            font-weight: bold;
+            color: #244a7b;
         }
         .annual-status {
             font-size: 1.3em;
@@ -124,13 +144,15 @@ function exportToPDF() {
             background-color: #fff3cd;
             color: #856404;
         }
-        .footer {
-            margin-top: 30px;
+        .pdf-footer {
+            position: fixed;
+            bottom: 10mm;
+            left: 0;
+            width: 100%;
             text-align: center;
             font-size: 0.9em;
             color: #666;
-            padding-top: 10px;
-            border-top: 1px solid #ddd;
+            padding: 5mm 0;
         }
     `;
     
@@ -144,58 +166,23 @@ function exportToPDF() {
             <style>${styles}</style>
         </head>
         <body>
-            <div class="header">
-                <h1>Relatório de Notas Escolares</h1>
-                <p>Gerado em ${data.date}</p>
+            <div class="top-info-section">
+                <p><strong>Ano Escolar:</strong> ${data.yearText || 'Não selecionado'}</p>
+                <p><strong>Matéria:</strong> ${data.subjectText || 'Não selecionada'}</p>
+                <p><strong>Meta de Média Final:</strong> ${data.goalText || 'Não definida'} ${data.goal === 'custom' ? `(${data.customGoal})` : ''}</p>
             </div>
             
-            <div class="info-section">
-                <div class="info-item">
-                    <span class="info-label">Ano Escolar:</span>
-                    <span>${data.yearText || 'Não selecionado'}</span>
-                </div>
-                <div class="info-item">
-                    <span class="info-label">Matéria:</span>
-                    <span>${data.subjectText || 'Não selecionada'}</span>
-                </div>
-                <div class="info-item">
-                    <span class="info-label">Meta:</span>
-                    <span>${data.goalText || 'Não definida'}</span>
-                    ${data.goal === 'custom' ? `(${data.customGoal})` : ''}
-                </div>
-            </div>
+            <div class="trimesters-pdf-grid">
     `;
 
     // Coletar resultados dos trimestres
-    TRIMS.forEach((prefix, i) => {
-        const trimResult = {
-            number: i + 1,
-            result: document.getElementById(`${prefix}_result`).textContent,
-            grades: {}
-        };
-        
-        // Coletar notas do trimestre
-        GRADES.forEach(id => {
-            const input = document.getElementById(`${prefix}_${id}`);
-            if (input) {
-                trimResult.grades[id] = {
-                    value: input.value || '-',
-                    isFixed: input.classList.contains('is-fixed')
-                };
-            }
-        });
-        
-        data.trimesterResults.push(trimResult);
-    });
-    
-    // O restante do seu código para gerar o HTML do relatório é mantido
-    
-    // Adicionar seções de trimestres
-    data.trimesterResults.forEach(trim => {
+    // GRADES e TRIMS são globais de script.js
+    window.TRIMS.forEach((prefix, i) => {
+        const trimNumber = i + 1;
         content += `
-            <div class="trimester">
-                <h2>Trimestre ${trim.number}</h2>
-                <div class="grades-grid">
+            <div class="trimester-pdf-card">
+                <h4>Trimestre ${trimNumber}</h4>
+                <div class="grades-pdf-grid">
         `;
         
         // Adicionar notas
@@ -203,34 +190,42 @@ function exportToPDF() {
             at1: "AT1 (Atividade 1)", 
             at2: "AT2 (Atividade 2)", 
             at3: "AT3 (Atividade 3)",
-            cr1: `CR${trim.number} (Cidadania)`, 
+            cr1: `CR${trimNumber} (Cidadania)`, 
             av1: "AV1 (Prova 1)", 
             av2: "AV2 (Prova 2)",
             sim: "SIM (Simulado)", 
             bns: "BNS (Bônus)"
         };
         
-        Object.entries(trim.grades).forEach(([id, grade]) => {
+        window.GRADES.forEach(id => { // GRADES é global de script.js
+            const input = document.getElementById(`${prefix}_${id}`); // DOM é global de script.js
+            if (!input) return;
+
+            const value = input.value || '-';
+            const isFixed = input.classList.contains('is-fixed');
+
             // Pular AV2 se não for usada
-            if (id === 'av2' && !getSubjectConfig(data.subject, data.year).usesAV2) {
+            if (id === 'av2' && !currentSubjectConfig.usesAV2) {
                 return;
             }
             
             content += `
-                <div class="grade-item ${grade.isFixed ? 'fixed-grade' : ''}">
+                <div class="grade-pdf-item ${isFixed ? 'fixed-grade' : ''}">
                     <span class="grade-label">${gradeLabels[id]}</span>
-                    <span class="grade-value">${grade.value}${grade.isFixed ? ' (Fixada)' : ''}</span>
+                    <span class="grade-value">${value}${isFixed ? ' (F)' : ''}</span>
                 </div>
             `;
         });
         
         content += `
                 </div>
-                <div class="result">Média Trimestral ${trim.number}: ${trim.result}</div>
+                <p class="trim-result">Média: <span>${document.getElementById(`${prefix}_result`).textContent}</span></p>
             </div>
         `;
     });
     
+    content += `</div> <!-- Fecha trimesters-pdf-grid -->`;
+
     // Adicionar resumo anual
     let statusClass = '';
     if (data.annualStatus === 'APROVADO!') {
@@ -241,14 +236,16 @@ function exportToPDF() {
         statusClass = 'status-partial';
     }
     
-    content += `
-        <div class="annual-summary">
-            <div class="annual-sum">Soma das Médias Trimestrais: ${data.annualSum}</div>
-            <div class="annual-status ${statusClass}">${data.annualStatus}</div>
+    content += ` 
+        <div class="annual-summary-pdf">
+            <h3>Resultado Anual Consolidado:</h3>
+            <p>Soma das Médias Trimestrais: <span>${data.annualSum}</span></p>
+            ${data.customGoalStatusHtml ? `<p>Status da Meta: <span>${data.customGoalStatusHtml}</span></p>` : ''}
+            <p>Status Geral: <span class="${statusClass}">${data.annualStatus}</span></p>
         </div>
         
-        <div class="footer">
-            <p>Calculadora de Notas Escolares - Desenvolvido por Nicolas Mendes</p>
+        <div class="pdf-footer">
+            <p>© 2025 Calculadora de Notas. desenvolvido por Nicolas Mendes, Todos os direitos reservados.</p>
         </div>
         </body>
         </html>
@@ -256,24 +253,31 @@ function exportToPDF() {
     
     // Criar um elemento temporário para a conversão
     const tempElement = document.createElement('div');
+    tempElement.style.position = 'absolute';
+    tempElement.style.left = '-9999px';
+    tempElement.style.width = '210mm'; // Largura de uma página A4
+
     tempElement.innerHTML = content;
     document.body.appendChild(tempElement); // Adicionar ao DOM temporariamente
 
     // Configurações para html2pdf
     const options = {
         margin: 10,
-        filename: `relatorio_notas_${data.date.replace(/\//g, '-')}.pdf`,
+        filename: `relatorio_notas_${data.subjectText.replace(/\s/g, '_')}_${data.date.replace(/\//g, '-')}.pdf`,
         image: { type: 'jpeg', quality: 0.98 },
-        html2canvas: { scale: 2 },
+        html2canvas: { 
+            scale: 2,
+            useCORS: true // Ajuda a evitar problemas com fontes ou imagens externas
+        },
         jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
     };
 
     // Gerar e salvar o PDF
     html2pdf().from(tempElement).set(options).save().then(() => {
-        tempElement.remove(); // Remover o elemento temporário após a geração
+        document.body.removeChild(tempElement); // Remover o elemento temporário após a geração
         showToast('PDF gerado com sucesso!', 'success', 3000);
     }).catch(error => {
-        tempElement.remove();
+        document.body.removeChild(tempElement);
         console.error('Erro ao gerar PDF:', error);
         showToast('Erro ao gerar PDF. Verifique o console para mais detalhes.', 'error', 5000);
     });

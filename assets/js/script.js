@@ -55,7 +55,8 @@ document.addEventListener('DOMContentLoaded', () => {
         MIN_GRADE: 0,
         MAX_GRADE: 10,
         DEFAULT_WEIGHT: 1,
-        THIRD_WEIGHT: 2,
+        THIRD_WEIGHT: 2, // Peso do terceiro trimestre
+        HOW_TO_USE_VISIBLE_KEY: 'howToUseVisible', // Chave para o localStorage
         DEFAULT_TARGET: 6.0,
         EPSILON: 0.0001,
         THEME_KEY: 'theme'
@@ -106,6 +107,8 @@ document.addEventListener('DOMContentLoaded', () => {
         clearAll: document.getElementById('clearAll'),
         annualSum: document.getElementById('annual_sum'),
         annualStatus: document.getElementById('annual_status'),
+        howToUseBtn: document.getElementById('toggle-how-to-use-btn'),
+        howToUseSection: document.getElementById('how-to-use-section'),
         projectionContent: document.getElementById('projection_message_content')
     };
     
@@ -560,49 +563,53 @@ document.addEventListener('DOMContentLoaded', () => {
     const updateAnnualUI = (sum, filled, messages) => {
         let status = '-';
         let statusClass = '';
-        
-        if (filled === 0) {
-            DOM.annualSum.textContent = '-';
-            messages.push("Nenhuma nota inserida para calcular o resultado anual.");
-        } else {
-            // Verificar se há uma meta personalizada
-            const goalStrategy = getProjectionStrategy();
-            const hasCustomGoal = goalStrategy.type === 'target' && DOM.goalSelector.value === 'custom';
-            const customGoalValue = hasCustomGoal ? pFloat(DOM.customGoal.value) : null;
-            
-            // Calcular a média por trimestre (considerando peso 2 para o terceiro trimestre)
-            const totalWeight = filled === 3 ? 4 : filled; // Se tiver 3 trimestres, peso total é 4 (1+1+2)
+
+        // 1. Atualizar a soma anual na UI
+        DOM.annualSum.textContent = sum.toFixed(2);
+
+        // 2. Lidar com o Status da Meta (para presets 6, 7, 8 e custom)
+        const goalStrategy = getProjectionStrategy();
+        const hasTargetGoal = goalStrategy.type === 'target';
+        const targetValue = hasTargetGoal ? goalStrategy.target : null;
+        const goalStatusContainer = document.querySelector('.custom-goal-status');
+
+        // Apenas mostrar o status da meta se houver uma meta de nota e todos os trimestres estiverem preenchidos
+        if (hasTargetGoal && targetValue > 0 && filled === 3) {
+            const totalWeight = 4; // Peso total para 3 trimestres (1 + 1 + 2)
             const avgPerTrimester = sum / totalWeight;
-            
-            // Adicionar classe para o valor da soma
-            DOM.annualSum.textContent = sum.toFixed(2);
-            
-            // Verificar se atingiu a meta personalizada
-            if (hasCustomGoal && customGoalValue > 0 && filled === 3) {
-                const goalMet = avgPerTrimester >= customGoalValue;
-                
-                // Adicionar status da meta personalizada na interface
+            const goalMet = avgPerTrimester >= targetValue;
+
+            if (goalStatusContainer) {
                 const goalStatusEl = document.getElementById('custom_goal_status');
                 if (goalStatusEl) {
                     goalStatusEl.textContent = goalMet ? 'Meta atingida!' : 'Meta não atingida';
                     goalStatusEl.className = goalMet ? 'status-goal-met' : 'status-goal-not-met';
-                    goalStatusEl.parentElement.style.display = 'block';
                 }
-                
-                // Adicionar mensagem sobre a meta personalizada
-                if (goalMet) {
-                    messages.push(`<strong>Meta atingida!</strong> Média por trimestre: ${avgPerTrimester.toFixed(2)} ≥ ${customGoalValue.toFixed(2)}`);
-                } else {
-                    messages.push(`<strong>Meta não atingida.</strong> Média por trimestre: ${avgPerTrimester.toFixed(2)} < ${customGoalValue.toFixed(2)}`);
-                }
-            } else {
-                // Esconder o status da meta personalizada se não houver meta
-                const goalStatusContainer = document.querySelector('.custom-goal-status');
-                if (goalStatusContainer) {
-                    goalStatusContainer.style.display = 'none';
-                }
+                goalStatusContainer.style.display = 'block';
             }
-            
+
+            // Adicionar mensagem sobre a meta
+            if (goalMet) {
+                messages.push(`<strong>Meta atingida!</strong> Média por trimestre: ${avgPerTrimester.toFixed(2)} ≥ ${targetValue.toFixed(2)}`);
+            } else {
+                messages.push(`<strong>Meta não atingida.</strong> Média por trimestre: ${avgPerTrimester.toFixed(2)} < ${targetValue.toFixed(2)}`);
+            }
+        } else {
+            // Esconder o status da meta se não for aplicável
+            if (goalStatusContainer) {
+                goalStatusContainer.style.display = 'none';
+            }
+        }
+
+        // 3. Lidar com o Status Geral (Aprovado/Recuperação)
+        if (filled === 0) {
+            DOM.annualSum.textContent = '-';
+            messages.push("Nenhuma nota inserida para calcular o resultado anual.");
+        } else if (filled < 3) {
+            status = "PARCIAL";
+            statusClass = "status-partial";
+            messages.push("Preencha ou projete todos os trimestres para o status final.");
+        } else { // Apenas quando filled === 3
             if (filled < 3) {
                 status = "PARCIAL";
                 statusClass = "status-partial";
@@ -620,6 +627,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
         
+        // 4. Atualizar a UI com o status e as mensagens
         DOM.annualStatus.textContent = status;
         DOM.annualStatus.className = statusClass;
         
@@ -765,6 +773,31 @@ document.addEventListener('DOMContentLoaded', () => {
         localStorage.setItem(CONFIG.THEME_KEY, newTheme);
     };
 
+    // Função para mostrar/esconder a seção "Como Usar"
+    const toggleHowToUse = () => {
+        const section = DOM.howToUseSection;
+        const isVisible = section.classList.toggle('show');
+
+        if (isVisible) {
+            // Define a altura máxima para a altura do conteúdo para uma transição suave
+            section.style.maxHeight = section.scrollHeight + 'px';
+        } else {
+            // Recolhe a seção
+            section.style.maxHeight = '0px';
+        }
+
+        // Salva o estado no localStorage
+        localStorage.setItem(CONFIG.HOW_TO_USE_VISIBLE_KEY, isVisible ? 'open' : 'closed');
+    };
+
+    // Função para inicializar o estado da seção "Como Usar"
+    const initHowToUseState = () => {
+        if (localStorage.getItem(CONFIG.HOW_TO_USE_VISIBLE_KEY) === 'open') {
+            DOM.howToUseSection.classList.add('show');
+            DOM.howToUseSection.style.maxHeight = DOM.howToUseSection.scrollHeight + 'px';
+        }
+    };
+
     // Funções para salvar e carregar dados
     const saveDataToLocalStorage = () => {
         const data = {
@@ -906,6 +939,7 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // Inicialização
     initTheme();
+    initHowToUseState(); // Inicializa o estado da seção "Como Usar"
     DOM.trimestersWrapper.innerHTML = TRIMS.map((_, i) => createTrimesterCard(i + 1)).join('');
     
     // Função para garantir que os resultados estejam atualizados após a inicialização
@@ -1110,6 +1144,7 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // Event Listeners
     DOM.themeToggle.addEventListener('click', toggleTheme);
+    DOM.howToUseBtn.addEventListener('click', toggleHowToUse);
     DOM.yearSelector.addEventListener('change', () => { handleYearChange(); saveAfterChange(); });
     DOM.subjectSelector.addEventListener('change', () => { handleSubjectChange(); saveAfterChange(); });
     DOM.goalSelector.addEventListener('change', () => { handleGoalChange(); saveAfterChange(); });

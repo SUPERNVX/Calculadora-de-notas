@@ -1,0 +1,247 @@
+/*
+ * Tema: Soft UI (Neumorphism)
+ * Descrição: Um tema minimalista e tátil com elementos que parecem emergir da interface.
+ */
+
+/* ===== FONTES E VARIÁVEIS GLOBAIS ===== */
+:root {
+    /* Tipografia */
+    --font-family: 'Inter', sans-serif;
+
+    /* Paleta de Cores Soft UI */
+    --bg-color: #e0e5ec;
+    --text-color: #5b6474;
+    --text-color-light: #9ba6b8;
+    --primary-color: #4a8cd8;
+    --primary-color-dark: #3a7cc8;
+    --shadow-dark: #a3b1c6;
+    --shadow-light: #ffffff;
+
+    /* Sombras Neumórficas */
+    --shadow-convex: 6px 6px 12px var(--shadow-dark), -6px -6px 12px var(--shadow-light);
+    --shadow-concave: inset 6px 6px 12px var(--shadow-dark), inset -6px -6px 12px var(--shadow-light);
+    --shadow-convex-sm: 4px 4px 8px var(--shadow-dark), -4px -4px 8px var(--shadow-light);
+    --shadow-concave-sm: inset 4px 4px 8px var(--shadow-dark), inset -4px -4px 8px var(--shadow-light);
+
+    /* Cores de Feedback */
+    --success-color: #6DD4B1;
+    --danger-color: #E97E7E;
+    --warning-color: #F0D38D;
+    --info-color: #8CB9E2;
+
+    /* Transições */
+    --transition-speed: 0.2s;
+    --transition-func: ease-in-out;
+}
+
+/* ===== MODO ESCURO PARA SOFT UI ===== */
+[data-theme="dark"] {
+    /* Paleta de Cores Soft UI - Escuro */
+    --bg-color: #2c313a;
+    --text-color: #d1d9e6;
+    --text-color-light: #8c97ac;
+    --primary-color: #5a9ee5;
+    --primary-color-dark: #4a8cd8;
+
+    /* As sombras são invertidas em conceito: a "clara" é mais escura que o fundo, e a "escura" é mais clara. */
+    --shadow-dark: #343a44; /* Sombra clara (mais clara que o fundo) */
+    --shadow-light: #242830; /* Sombra escura (mais escura que o fundo) */
+
+    /* Cores de Feedback mais vibrantes para o fundo escuro */
+    --success-color: #5fcf80;
+    --danger-color: #e74c3c;
+    --warning-color: #f1c40f;
+    --info-color: #3498db;
+}
+
+/* Ajustes específicos para o modo escuro que não são cobertos por variáveis */
+[data-theme="dark"] .selector-container select:focus,
+[data-theme="dark"] .selector-container .form-input:focus,
+[data-theme="dark"] .input-field-wrapper input[type="number"]:focus,
+[data-theme="dark"] .share-link-input:focus {
+    box-shadow: var(--shadow-concave-sm), 0 0 0 2px rgba(90, 158, 229, 0.5);
+}
+
+[data-theme="dark"] .theme-option:hover {
+    background-color: rgba(255, 255, 255, 0.05);
+}
+
+[data-theme="dark"] .input-field-wrapper input[type="number"].is-fixed {
+    box-shadow: var(--shadow-concave-sm), inset 0 0 5px var(--primary-color-dark);
+}
+
+/* ===== ESTILOS BASE ===== */
+body {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    font-family: var(--font-family);
+}
+
+.app-container {
+    background: transparent;
+    box-shadow: none;
+}
+
+/* ===== CABEÇALHO ===== */
+.app-header {
+    border-bottom-color: var(--shadow-dark);
+}
+.app-header h1 {
+    color: var(--text-color);
+    font-weight: 600;
+    text-shadow: 1px 1px 1px var(--shadow-light);
+}
+.app-header p {
+    color: var(--text-color-light);
+}
+
+/* ===== CARDS E CONTAINERS ===== */
+.trimester-card, .overall-result-card, .selector-container, .controls {
+    background: var(--bg-color);
+    border-radius: 20px;
+    border: none;
+    box-shadow: var(--shadow-convex);
+    transition: box-shadow var(--transition-speed) var(--transition-func);
+}
+
+.trimester-card::before, .overall-result-card::before {
+    display: none; /* Remove a barra colorida de outros temas */
+}
+
+.trimester-card h2, .overall-result-card h3 {
+    color: var(--text-color);
+    border-bottom-color: var(--shadow-dark);
+}
+
+/* ===== INPUTS E SELETORES (Efeito de cavidade) ===== */
+.selector-container select, .selector-container .form-input,
+.input-field-wrapper input[type="number"], .share-link-input {
+    background-color: var(--bg-color);
+    border: none;
+    border-radius: 10px;
+    color: var(--text-color);
+    box-shadow: var(--shadow-concave-sm);
+    transition: box-shadow var(--transition-speed) var(--transition-func);
+    padding: 12px 15px;
+}
+
+.selector-container select:focus, .selector-container .form-input:focus,
+.input-field-wrapper input[type="number"]:focus, .share-link-input:focus {
+    box-shadow: var(--shadow-concave-sm), 0 0 0 2px rgba(74, 140, 216, 0.5);
+    outline: none;
+}
+
+/* Input fixado */
+.input-field-wrapper input[type="number"].is-fixed {
+    box-shadow: var(--shadow-concave-sm), inset 0 0 5px var(--primary-color-dark);
+}
+
+/* Input projetado */
+.input-field-wrapper input[type="number"].projected-grade {
+    color: var(--primary-color-dark);
+    font-weight: 700;
+}
+
+/* ===== BOTÕES (Efeito de emergir/afundar) ===== */
+.btn {
+    border: none;
+    border-radius: 10px;
+    font-weight: 600;
+    color: var(--text-color);
+    background: var(--bg-color);
+    box-shadow: var(--shadow-convex-sm);
+    transition: all var(--transition-speed) var(--transition-func);
+}
+
+.btn:hover {
+    color: var(--primary-color);
+    transform: translateY(-2px);
+}
+
+.btn:active, .btn-clicked {
+    box-shadow: var(--shadow-concave-sm);
+    transform: translateY(1px);
+    color: var(--primary-color-dark);
+}
+
+.btn-primary { color: var(--primary-color); font-weight: 700; }
+.btn-danger { color: var(--danger-color); font-weight: 700; }
+.btn-secondary { color: var(--text-color-light); }
+.btn-info { color: var(--info-color); }
+
+/* Botão de fixar */
+.btn-fix {
+    color: var(--info-color);
+}
+.btn-fix.fixed-active {
+    box-shadow: var(--shadow-concave-sm);
+    color: var(--primary-color);
+}
+
+/* ===== RESULTADOS E STATUS ===== */
+.result {
+    background-color: transparent;
+    border-left: none;
+    text-align: center;
+    font-size: 1.2em;
+    color: var(--text-color);
+    padding: 15px;
+    margin-top: 10px;
+    border-radius: 15px;
+    box-shadow: var(--shadow-concave);
+}
+
+.annual-summary {
+    background-color: transparent;
+    box-shadow: none;
+}
+
+.annual-summary span {
+    background-color: var(--bg-color);
+    box-shadow: var(--shadow-convex-sm);
+    color: var(--text-color);
+}
+
+.status-approved { color: var(--success-color) !important; }
+.status-recovery { color: var(--danger-color) !important; }
+.status-partial { color: var(--warning-color) !important; }
+
+/* ===== ANÁLISE GRÁFICA ===== */
+.chart-wrapper, .stat-item {
+    background-color: var(--bg-color);
+    border-radius: 15px;
+    box-shadow: var(--shadow-convex);
+}
+
+.stat-value { color: var(--primary-color); }
+.trend-up { color: var(--success-color); }
+.trend-down { color: var(--danger-color); }
+.trend-stable { color: var(--warning-color); }
+
+/* ===== SELETORES DE TEMA ===== */
+.theme-toggle, .theme-selector {
+    background-color: var(--bg-color);
+    border: none;
+    color: var(--text-color-light);
+    box-shadow: var(--shadow-convex-sm);
+}
+
+.theme-toggle:active, .theme-selector:active {
+    box-shadow: var(--shadow-concave-sm);
+}
+
+.theme-dropdown {
+    background: var(--bg-color);
+    border-radius: 15px;
+    box-shadow: var(--shadow-convex);
+}
+
+.theme-option:hover {
+    background-color: rgba(0,0,0,0.05);
+}
+
+.theme-option.active {
+    box-shadow: var(--shadow-concave-sm);
+    color: var(--primary-color);
+    background-color: transparent;
+}

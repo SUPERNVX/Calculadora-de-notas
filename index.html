@@ -41,6 +41,9 @@
                 <div class="header-text">
                     <h1>Calculadora de Notas Escolares</h1>
                     <p>Planeje seu sucesso acadêmico com precisão!</p>
+                    <button id="toggle-how-to-use-btn" class="btn btn-how-to-use">
+                        <i class="fas fa-question-circle"></i> Como Usar
+                    </button>
                 </div>
                 <div class="theme-controls right-controls">
                     <button id="theme-toggle" class="theme-toggle" aria-label="Alternar tema">
@@ -50,6 +53,54 @@
                 </div>
             </div>
         </header>
+
+        <section id="how-to-use-section" class="how-to-use-section">
+            <h2>Como Usar a Calculadora</h2>
+            <div class="steps-container">
+                <div class="step">
+                    <div class="step-number">1</div>
+                    <div class="step-content">
+                        <h3>Selecione Ano e Matéria</h3>
+                        <p>Comece escolhendo seu ano escolar e a matéria. A calculadora se ajustará automaticamente.</p>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <div class="step-content">
+                        <h3>Personalize o Visual</h3>
+                        <p>Clique no ícone de paleta <i class="fas fa-palette"></i> para escolher seu tema preferido.</p>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <div class="step-content">
+                        <h3>Insira suas Notas</h3>
+                        <p>Preencha os campos com as notas que você já possui. Use o botão <i class="fas fa-thumbtack"></i> para "travar" uma nota, impedindo que ela seja alterada durante os cálculos de projeção.</p>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-number">4</div>
+                    <div class="step-content">
+                        <h3>Defina sua Meta</h3>
+                        <p>Escolha uma meta de média ou defina um valor personalizado para suas projeções.</p>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-number">5</div>
+                    <div class="step-content">
+                        <h3>Calcule e Projete</h3>
+                        <p>Clique em "Calcular / Projetar" para ver suas médias e as notas necessárias para atingir sua meta.</p>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-number">6</div>
+                    <div class="step-content">
+                        <h3>Analise e Compartilhe</h3>
+                        <p>Explore os gráficos de desempenho e use as opções para exportar um PDF ou compartilhar um link com seus resultados.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
 
         <main class="main-content">
             <div class="selector-container">
@@ -106,7 +157,7 @@
             <div class="overall-result-card">
                 <h3>Resultado Anual Consolidado</h3>
                 <div class="annual-summary">
-                    <div>Soma das Médias Trimestrais: <span id="annual_sum" aria-live="polite">-</span></div>
+                    <div>Soma das Médias Trimestrais: <span id="annual_sum" aria-live="polite">-</span></div> 
                     <div class="custom-goal-status" style="display: none;">Status da Meta: <span id="custom_goal_status" aria-live="polite">-</span></div>
                     <div>Status Geral: <span id="annual_status" aria-live="polite">-</span></div>
                 </div>

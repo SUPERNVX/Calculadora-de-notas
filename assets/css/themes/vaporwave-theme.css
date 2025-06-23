@@ -1,0 +1,311 @@
+/*
+ * Tema: Vaporwave
+ * Descrição: Um tema nostálgico e etéreo com paleta pastel, gradientes suaves e efeitos de sonho.
+ */
+
+/* Import a suitable font */
+@import url('https://fonts.googleapis.com/css2?family=Comfortaa:wght@300;400;500;600;700&display=swap');
+
+/* ===== FONTES E VARIÁVEIS GLOBAIS ===== */
+:root {
+    /* Tipografia */
+    --font-family: 'Comfortaa', sans-serif;
+
+    /* Paleta de Cores Vaporwave */
+    --vapor-pink: #FF80A0; /* Rosa mais saturado */
+    --vapor-blue: #6FB3D2; /* Azul mais escuro para melhor contraste */
+    --vapor-purple: #B060D0; /* Roxo mais saturado */
+    --vapor-peach: #FFC080; /* Pêssego mais saturado */
+    --vapor-mint: #7CFC00; /* Verde menta mais saturado */
+
+    --bg-gradient-light: linear-gradient(135deg, var(--vapor-pink) 0%, var(--vapor-blue) 50%, var(--vapor-purple) 100%);
+    --bg-gradient-dark: linear-gradient(135deg, #4B0082 0%, #4682B4 50%, #6A5ACD 100%); /* Mantido para o modo escuro */
+
+    --text-color: #2a2a3a; /* Texto mais escuro e sutilmente saturado */
+    --text-color-light: #5a5a6a; /* Texto claro mais escuro e sutilmente saturado */
+    --primary-color: var(--vapor-pink);
+    --secondary-color: var(--vapor-blue);
+    --accent-color: var(--vapor-peach);
+
+    /* Glass-like elements for cards/inputs */
+    --glass-bg: rgba(255, 255, 255, 0.4); /* Semi-transparent white */
+    --glass-border: rgba(255, 255, 255, 0.6);
+    --glass-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    --glass-blur: 8px;
+
+    /* Shadows */
+    --shadow-soft: 0 5px 15px rgba(0, 0, 0, 0.1);
+    --shadow-pastel-pink: 0 0 15px rgba(255, 182, 193, 0.5);
+    --shadow-pastel-blue: 0 0 15px rgba(173, 216, 230, 0.5);
+
+    /* Cores de Feedback */
+    --success-color: var(--vapor-mint);
+    --danger-color: #FF6347; /* Tomato */
+    --warning-color: var(--vapor-peach);
+    --info-color: var(--vapor-blue);
+
+    /* Transições */
+    --transition-speed: 0.8s;
+    --transition-func: ease-in-out;
+}
+
+/* ===== MODO ESCURO PARA VAPORWAVE ===== */
+[data-theme="dark"] {
+    --bg-gradient-light: var(--bg-gradient-dark); /* Use the dark gradient */
+    --text-color: #e0e0e0; /* Light text for dark background */
+    --text-color-light: #b0b0b0;
+    --primary-color: #FF69B4; /* HotPink for dark mode */
+    --secondary-color: #4682B4; /* SteelBlue for dark mode */
+    --accent-color: #DA70D6; /* Orchid for dark mode */
+
+    --glass-bg: rgba(0, 0, 0, 0.4); /* Semi-transparent black */
+    --glass-border: rgba(0, 0, 0, 0.6);
+    --glass-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+
+    --shadow-soft: 0 5px 15px rgba(0, 0, 0, 0.3);
+    --shadow-pastel-pink: 0 0 15px rgba(255, 105, 180, 0.5);
+    --shadow-pastel-blue: 0 0 15px rgba(70, 130, 180, 0.5);
+
+    --success-color: #3CB371; /* MediumSeaGreen */
+    --danger-color: #DC143C; /* Crimson */
+    --warning-color: #FFD700; /* Gold */
+    --info-color: #6495ED; /* CornflowerBlue */
+}
+
+/* ===== ESTILOS BASE E FUNDO ANIMADO ===== */
+body {
+    background: var(--bg-gradient-light);
+    background-size: 200% 200%; /* For animating background-position */
+    animation: animateGradient 15s ease infinite;
+    color: var(--text-color);
+    font-family: var(--font-family);
+    position: relative;
+    overflow-x: hidden;
+}
+
+/* Aesthetic Grid */
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: 
+        linear-gradient(to right, rgba(255,255,255,0.05) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255,255,255,0.05) 1px, transparent 1px);
+    background-size: 40px 40px;
+    opacity: 0.8; /* Make it more visible */
+    z-index: -1;
+    pointer-events: none;
+}
+
+/* Subtle VHS effect */
+body {
+    filter: contrast(1.05) saturate(1.05); /* Subtle contrast and saturation */
+}
+
+/* ===== ANIMAÇÕES ===== */
+@keyframes animateGradient {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+@keyframes float {
+    0% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
+    100% { transform: translateY(0px); }
+}
+
+/* ===== LAYOUT E CONTAINERS ===== */
+.app-container {
+    background: transparent;
+    box-shadow: none;
+}
+
+/* ===== CABEÇALHO ===== */
+.app-header h1 {
+    color: var(--primary-color);
+    text-shadow: 0 0 10px var(--primary-color), 0 0 20px var(--secondary-color);
+    letter-spacing: 2px;
+}
+.app-header p {
+    color: var(--text-color-light);
+}
+
+/* ===== CARDS E CONTAINERS (Glass-like) ===== */
+.trimester-card, .overall-result-card, .selector-container, .controls {
+    background: var(--glass-bg);
+    backdrop-filter: blur(var(--glass-blur));
+    -webkit-backdrop-filter: blur(var(--glass-blur));
+    border-radius: 15px;
+    border: 1px solid var(--glass-border);
+    box-shadow: var(--glass-shadow);
+    transition: all var(--transition-speed) var(--transition-func);
+    animation: float 8s ease-in-out infinite; /* Subtle floating effect */
+}
+
+.trimester-card:hover, .overall-result-card:hover, .selector-container:hover, .controls:hover {
+    transform: translateY(-5px) scale(1.01);
+    box-shadow: var(--glass-shadow), var(--shadow-pastel-pink), var(--shadow-pastel-blue);
+    filter: brightness(1.1); /* Subtle glow on hover */
+}
+
+.trimester-card::before, .overall-result-card::before {
+    display: none; /* Remove the colored bar from other themes */
+}
+
+.trimester-card h2, .overall-result-card h3 {
+    color: var(--primary-color); /* Revertido para a cor original preferida */
+    text-shadow: 0 0 8px var(--primary-color); /* Adicionado brilho pastel para manter o estilo */
+    border-bottom-color: var(--glass-border);
+}
+
+/* Aumenta a visibilidade dos labels das notas */
+.input-group label {
+    color: var(--secondary-color); /* Revertido para a cor original preferida */
+    font-weight: 500;
+}
+
+/* ===== INPUTS E SELETORES ===== */
+.selector-container select, .selector-container .form-input,
+.input-field-wrapper input[type="number"], .share-link-input {
+    background-color: rgba(255, 255, 255, 0.2); /* Lighter glass */
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    border-radius: 8px;
+    color: var(--text-color);
+    transition: all var(--transition-speed) var(--transition-func);
+    box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.1);
+}
+
+.selector-container select:focus, .selector-container .form-input:focus,
+.input-field-wrapper input[type="number"]:focus, .share-link-input:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2), 0 0 10px var(--primary-color); /* Pastel glow on focus */
+}
+
+/* Input fixado */
+.input-field-wrapper input[type="number"].is-fixed {
+    background-color: rgba(255, 182, 193, 0.2); /* Pinkish tint */
+    border-color: var(--primary-color);
+}
+
+/* Input projetado */
+.input-field-wrapper input[type="number"].projected-grade {
+    background-color: rgba(173, 216, 230, 0.2); /* Blueish tint */
+    border-color: var(--secondary-color);
+    color: var(--secondary-color);
+    font-weight: 600;
+}
+
+/* ===== BOTÕES ===== */
+.btn {
+    background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    color: var(--text-color);
+    box-shadow: var(--shadow-soft);
+    transition: all var(--transition-speed) var(--transition-func);
+    overflow: hidden;
+    position: relative;
+}
+
+.btn:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-soft), var(--shadow-pastel-pink), var(--shadow-pastel-blue);
+    filter: blur(1px); /* Dreamy blur */
+}
+
+.btn:active, .btn-clicked {
+    transform: translateY(1px);
+    box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.2);
+    filter: blur(0);
+}
+
+.btn-primary { background: linear-gradient(45deg, var(--primary-color), var(--vapor-purple)); }
+.btn-danger { background: linear-gradient(45deg, var(--danger-color), var(--vapor-peach)); }
+.btn-secondary { background: linear-gradient(45deg, var(--text-color-light), var(--text-color)); }
+.btn-info { background: linear-gradient(45deg, var(--info-color), var(--vapor-mint)); }
+
+/* Botão de fixar */
+.btn-fix {
+    background: rgba(255, 255, 255, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    color: var(--text-color);
+}
+.btn-fix.fixed-active {
+    background: var(--primary-color);
+    color: white;
+    box-shadow: 0 0 10px var(--primary-color);
+}
+
+/* ===== RESULTADOS E STATUS ===== */
+.result {
+    background-color: rgba(255, 255, 255, 0.2);
+    border-left: 5px solid var(--primary-color);
+    border-radius: 8px;
+    color: var(--text-color);
+    box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.annual-summary {
+    background-color: transparent;
+    box-shadow: none;
+}
+
+.annual-summary span {
+    background-color: rgba(255, 255, 255, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    box-shadow: var(--shadow-soft);
+    color: var(--text-color);
+}
+
+.status-approved { color: var(--success-color) !important; text-shadow: 0 0 8px var(--success-color); }
+.status-recovery { color: var(--danger-color) !important; text-shadow: 0 0 8px var(--danger-color); }
+.status-partial { color: var(--warning-color) !important; text-shadow: 0 0 8px var(--warning-color); }
+
+/* ===== ANÁLISE GRÁFICA ===== */
+.chart-wrapper, .stat-item {
+    background-color: var(--glass-bg);
+    backdrop-filter: blur(var(--glass-blur));
+    -webkit-backdrop-filter: blur(var(--glass-blur));
+    border-radius: 15px;
+    border: 1px solid var(--glass-border);
+    box-shadow: var(--glass-shadow);
+}
+
+.stat-value { color: var(--primary-color); }
+.trend-up { color: var(--success-color); }
+.trend-down { color: var(--danger-color); }
+.trend-stable { color: var(--warning-color); }
+
+/* ===== SELETORES DE TEMA ===== */
+.theme-toggle, .theme-selector {
+    background: var(--glass-bg);
+    backdrop-filter: blur(var(--glass-blur));
+    -webkit-backdrop-filter: blur(var(--glass-blur));
+    border: 1px solid var(--glass-border);
+    color: var(--primary-color);
+    box-shadow: var(--glass-shadow);
+}
+
+.theme-dropdown {
+    background: var(--glass-bg);
+    backdrop-filter: blur(var(--glass-blur));
+    -webkit-backdrop-filter: blur(var(--glass-blur));
+    border: 1px solid var(--glass-border);
+    border-radius: 15px;
+    box-shadow: var(--glass-shadow);
+}
+
+.theme-option:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.theme-option.active {
+    background-color: rgba(255, 255, 255, 0.2);
+    color: var(--primary-color);
+}

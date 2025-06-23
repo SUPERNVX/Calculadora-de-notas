@@ -33,6 +33,9 @@
     --card-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
     --card-radius: 12px;
     --input-bg: rgba(255, 255, 255, 0.05);
+    /* Ajustes para o fundo dos retângulos de resultados e mensagens */
+    --result-bg: rgba(30, 41, 59, 0.8); /* Fundo mais escuro para o resumo anual */
+    --projection-message-bg: rgba(30, 41, 59, 0.8); /* Fundo mais escuro para as mensagens de projeção */
     --control-bg: rgba(30, 41, 59, 0.4);
     
     /* Transições */

@@ -106,6 +106,14 @@
 .theme-retrowave .theme-color-dot:nth-child(2) { background-color: #00ffff; } 
 .theme-retrowave .theme-color-dot:nth-child(3) { background-color: #ffff00; } 
 
+/* Cores para o tema Soft UI */
+.theme-soft_ui .theme-color-dot:nth-child(1) { background-color: #a3b1c6; } /* Azul Pastel */
+.theme-soft_ui .theme-color-dot:nth-child(2) { background-color: #e0e5ec; } /* Cinza Claro (Fundo) */
+.theme-soft_ui .theme-color-dot:nth-child(3) { background-color: #ffffff; } /* Destaque Branco */
+/* Cores para o tema Vaporwave (mais saturadas) */
+.theme-vaporwave .theme-color-dot:nth-child(1) { background-color: #FF80A0; } /* Rosa mais saturado */
+.theme-vaporwave .theme-color-dot:nth-child(2) { background-color: #6FB3D2; } /* Azul mais escuro */
+.theme-vaporwave .theme-color-dot:nth-child(3) { background-color: #FFC080; } /* Pêssego mais saturado */
 
 @keyframes fadeInDropdown {
     from {

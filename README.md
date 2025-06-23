@@ -16,6 +16,7 @@ A calculadora foi desenvolvida com um conjunto robusto de funcionalidades para a
 - **Projeção de Notas:** Calcule automaticamente a nota necessária nos campos em branco para atingir uma meta específica, seja ela passar de ano ou uma média personalizada.
 - **Fixação de Notas:** "Trave" notas já definidas para que elas não sejam alteradas durante os cálculos de projeção.
 - **Análise Gráfica de Desempenho:**
+  - **Guia Interativo "Como Usar":** Uma seção na própria aplicação que se expande para explicar o passo a passo de como utilizar todas as funcionalidades.
   - **Gráfico de Barras:** Visualize seu desempenho ao longo dos trimestres.
   - **Gráfico de Rosca:** Entenda a distribuição das suas notas em diferentes faixas (Reprovado, Recuperação, Bom, Ótimo).
 - **Resumo Estatístico:** Obtenha insights rápidos com a média geral de todas as notas, a nota mais alta, a mais baixa e a tendência de desempenho.
@@ -25,10 +26,12 @@ A calculadora foi desenvolvida com um conjunto robusto de funcionalidades para a
   - **QR Code:** Gere um QR Code para compartilhamento rápido em dispositivos móveis.
 - **Persistência de Dados:** Suas notas são salvas automaticamente no navegador. Feche a aba e volte depois, seus dados estarão lá.
 - **Importar e Exportar Dados:** Salve o estado completo da sua calculadora em um arquivo JSON e importe-o mais tarde ou em outro dispositivo.
-- **Sistema de Temas Avançado:** Escolha entre múltiplos temas para personalizar completamente sua experiência. Inclui:
+- **Sistema de Temas Avançado:** Escolha entre múltiplos temas, cada um com modo claro e escuro, para personalizar completamente sua experiência. Inclui:
   - **Padrão:** Um tema limpo e funcional com modos claro e escuro.
   - **Moderno:** Um visual elegante com fundo de partículas animado e efeitos de *glassmorphism*.
   - **Retrowave:** Uma imersão cyberpunk com cores neon, grids animados e efeitos de brilho.
+  - **Soft UI:** Um visual tátil e minimalista com elementos que parecem emergir da interface (Neumorfismo).
+  - **Vaporwave:** Um visual nostálgico com paleta pastel, gradientes suaves e efeitos etéreos.
 - **Design Responsivo:** Totalmente funcional em desktops, tablets e smartphones.
 
 ---

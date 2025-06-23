@@ -597,6 +597,26 @@ input:checked + .toggle-slider:before {
     letter-spacing: 0.5px;
 }
 
+.btn.btn-how-to-use {
+    margin-top: 15px;
+    padding: 10px 20px;
+    font-size: 0.95em;
+    text-transform: none;
+    letter-spacing: 0.2px;
+    background-color: transparent;
+    border: 1px solid var(--info-color);
+    color: var(--info-color);
+}
+
+.btn.btn-how-to-use:hover {
+    background-color: var(--info-color);
+    color: white;
+}
+
+.btn.btn-how-to-use i {
+    margin-right: 8px;
+}
+
 .btn:hover { transform: translateY(-2px); }
 .btn:active { transform: translateY(0px); }
 .btn-primary { background-color: var(--primary-color); }
@@ -1149,6 +1169,92 @@ input:checked + .toggle-slider:before {
     font-weight: 500;
 }
 
+/* ===== SEÇÃO COMO USAR ===== */
+.how-to-use-section {
+    background-color: var(--card-bg);
+    padding: 25px 30px;
+    border-radius: 12px;
+    border: 1px solid var(--border-color);
+    box-shadow: 0 6px 20px rgba(0,0,0,0.07);
+    /* Collapsed by default */
+    max-height: 0;
+    opacity: 0;
+    overflow: hidden;
+    padding-top: 0;
+    padding-bottom: 0;
+    margin-bottom: 0;
+    transition: max-height 0.5s ease-in-out, opacity 0.5s ease-in-out, padding 0.5s ease-in-out, margin-bottom 0.5s ease-in-out;
+}
+
+.how-to-use-section.show {
+    max-height: 1000px; /* A large enough value, will be adjusted by JS */
+    opacity: 1;
+    padding-top: 25px;
+    padding-bottom: 25px;
+    margin-bottom: 30px;
+}
+
+.how-to-use-section h2 {
+    text-align: center;
+    color: var(--primary-color);
+    margin-top: 0;
+    margin-bottom: 25px;
+    font-size: 1.8em;
+}
+
+.steps-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+}
+
+.step {
+    display: flex;
+    align-items: flex-start;
+    gap: 15px;
+    background-color: var(--bg-color);
+    padding: 15px;
+    border-radius: 8px;
+    border-left: 4px solid var(--primary-color);
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.step:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+.step-number {
+    flex-shrink: 0;
+    width: 40px;
+    height: 40px;
+    background-color: var(--primary-color);
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2em;
+    font-weight: 700;
+}
+
+.step-content h3 {
+    margin: 0 0 5px 0;
+    color: var(--text-color);
+    font-size: 1.1em;
+}
+
+.step-content p {
+    margin: 0;
+    color: var(--secondary-color);
+    font-size: 0.95em;
+    line-height: 1.5;
+}
+
+.step-content i {
+    color: var(--primary-color);
+}
+
 @keyframes spin {
     to { transform: rotate(360deg); }
 }
@@ -1159,6 +1265,10 @@ input:checked + .toggle-slider:before {
         width: 100%;
         padding: 15px;
         border-radius: 8px;
+    }
+    
+    .trimesters-wrapper {
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* Ajusta min-width para tablets */
     }
     
     .header-content {
@@ -1221,6 +1331,37 @@ input:checked + .toggle-slider:before {
     }
 }
 
+/* Ajustes para telas menores que 550px (smartphones maiores e tablets pequenos) */
+@media (max-width: 550px) {
+    .trimesters-wrapper {
+        grid-template-columns: 1fr; /* Força uma única coluna para os cards de trimestre */
+    }
+
+    .input-field-wrapper {
+        flex-direction: column; /* Empilha input e botão de fixar */
+    }
+
+    .input-field-wrapper input[type="number"] {
+        width: 100%;
+        margin-bottom: 5px;
+    }
+
+    .btn-fix {
+        width: 100%;
+    }
+
+    .charts-container {
+        grid-template-columns: 1fr; /* Força uma única coluna para os gráficos */
+    }
+
+    .share-options {
+        flex-direction: column; /* Empilha os botões de compartilhamento */
+    }
+    .share-options button {
+        width: 100%;
+    }
+}
+
 @media (max-width: 480px) {
     .app-header h1 {
         font-size: 1.3rem;
@@ -1234,19 +1375,6 @@ input:checked + .toggle-slider:before {
         padding: 15px;
     }
     
-    .input-field-wrapper {
-        flex-direction: column;
-    }
-    
-    .input-field-wrapper input {
-        width: 100%;
-        margin-bottom: 5px;
-    }
-    
-    .btn-fix {
-        width: 100%;
-    }
-    
     .result {
         font-size: 0.95em;
         padding: 10px;
@@ -1254,5 +1382,29 @@ input:checked + .toggle-slider:before {
     
     #projection_message_content {
         font-size: 0.9em;
+    }
+}
+
+/* ===== AJUSTES PARA MONITORES MAIORES (RESPONSIVIDADE) ===== */
+
+/* Para telas a partir de 1440px de largura (monitores QHD) */
+@media (min-width: 1441px) {
+    .app-container {
+        max-width: 1360px; /* Aumenta a largura máxima do container */
+    }
+
+    .app-header h1 {
+        font-size: 2.2rem; /* Aumenta um pouco o título principal para melhor proporção */
+    }
+}
+
+/* Para telas a partir de 2000px de largura (monitores 4K) */
+@media (min-width: 2001px) {
+    .app-container {
+        max-width: 1600px; /* Aumenta ainda mais para telas muito grandes */
+    }
+
+    .app-header h1 {
+        font-size: 2.5rem;
     }
 }
