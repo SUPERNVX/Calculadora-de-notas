@@ -1231,9 +1231,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // Event listeners para exportação PDF
-    document.getElementById('exportPDF').addEventListener('click', window.PDFExport.exportToPDF);
-    
     // Verificar se há dados compartilhados na URL
     setTimeout(() => {
         window.Sharing.checkSharedData();

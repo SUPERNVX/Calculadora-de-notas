@@ -283,7 +283,10 @@ function exportToPDF() {
     });
 }
 
-// Exportar função para uso global
-window.PDFExport = {
-    exportToPDF: exportToPDF
-};
+// Adicionar o event listener quando o DOM estiver pronto
+document.addEventListener('DOMContentLoaded', () => {
+    const exportButton = document.getElementById('exportPDF');
+    if (exportButton) {
+        exportButton.addEventListener('click', exportToPDF);
+    }
+});
