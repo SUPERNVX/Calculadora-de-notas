@@ -1,11 +1,10 @@
 // Tornar showToast disponível globalmente
 let showToast;
 
-// Lida com a tela de carregamento assim que o DOM estiver pronto.
 document.addEventListener('DOMContentLoaded', () => {
     // Mostrar tela de carregamento
     const loadingScreen = document.getElementById('loading-screen');
-
+    
     // Simular tempo de carregamento para melhor experiência do usuário
     setTimeout(() => {
         loadingScreen.classList.add('hidden');
@@ -13,10 +12,9 @@ document.addEventListener('DOMContentLoaded', () => {
             loadingScreen.style.display = 'none';
         }, 500);
     }, 800);
-});
-
-// Função para mostrar notificações toast
-showToast = (message, type = 'success', duration = 5000) => {
+    
+    // Função para mostrar notificações toast
+    showToast = (message, type = 'success', duration = 5000) => {
         const toastContainer = document.getElementById('toast-container');
         const toast = document.createElement('div');
         toast.className = `toast ${type}`;
@@ -49,9 +47,9 @@ showToast = (message, type = 'success', duration = 5000) => {
                 }
             }, duration);
         }, 100);
-};
-
-const CONFIG = {
+    };
+    // Constantes
+    const CONFIG = {
         SCHOOL_YEAR_EM3: 'em_3',
         PASSING_SUM_ANNUAL: 24.0,
         MIN_GRADE: 0,
@@ -62,19 +60,19 @@ const CONFIG = {
         DEFAULT_TARGET: 6.0,
         EPSILON: 0.0001,
         THEME_KEY: 'theme'
-};
+    };
+    
+    // Tornar CONFIG disponível globalmente
+    window.CONFIG = CONFIG;
 
-// Tornar CONFIG disponível globalmente
-window.CONFIG = CONFIG;
-
-const GRADES = ['at1', 'at2', 'at3', 'cr1', 'av1', 'av2', 'sim', 'bns'];
-const TRIMS = ['t1', 't2', 't3'];
-
-// Tornar constantes disponíveis globalmente
-window.GRADES = GRADES;
-window.TRIMS = TRIMS;
-
-const SUBJECTS = [
+    const GRADES = ['at1', 'at2', 'at3', 'cr1', 'av1', 'av2', 'sim', 'bns'];
+    const TRIMS = ['t1', 't2', 't3'];
+    
+    // Tornar constantes disponíveis globalmente
+    window.GRADES = GRADES;
+    window.TRIMS = TRIMS;
+    
+    const SUBJECTS = [
         { value: 'matematica', text: 'Matemática', usesAV2: true },
         { value: 'portugues', text: 'Português', usesAV2: true },
         { value: 'biologia', text: 'Biologia', usesAV2: true },
@@ -85,17 +83,18 @@ const SUBJECTS = [
         { value: 'historia', text: 'História', usesAV2: false },
         { value: 'sociologia', text: 'Sociologia', usesAV2: false },
         { value: 'filosofia', text: 'Filosofia', usesAV2: false }
-];
+    ];
 
-const WEIGHTS = {
+    const WEIGHTS = {
         standard: { av1: 2/3, m_at: 1/6, sim: 1/12, cr1: 1/12 },
         dualExam: { m_av: 2/3, m_at: 1/6, sim: 1/12, cr1: 1/12 }
-};
+    };
+    
+    // Tornar WEIGHTS disponível globalmente
+    window.WEIGHTS = WEIGHTS;
 
-// Tornar WEIGHTS disponível globalmente
-window.WEIGHTS = WEIGHTS;
-
-const DOM = {
+    // Cache de elementos DOM
+    const DOM = {
         root: document.documentElement,
         themeToggle: document.getElementById('theme-toggle'),
         yearSelector: document.getElementById('yearSelector'),
@@ -111,32 +110,33 @@ const DOM = {
         howToUseBtn: document.getElementById('toggle-how-to-use-btn'),
         howToUseSection: document.getElementById('how-to-use-section'),
         projectionContent: document.getElementById('projection_message_content')
-};
+    };
+    
+    // Tornar DOM disponível globalmente
+    window.DOM = DOM;
 
-// Tornar DOM disponível globalmente
-window.DOM = DOM;
+    // Utilitários
+    const pFloat = val => isNaN(val = parseFloat(val)) ? 0 : val;
+    const clamp = (val, min = CONFIG.MIN_GRADE, max = CONFIG.MAX_GRADE) => Math.max(min, Math.min(max, pFloat(val)));
+    const getEl = id => document.getElementById(id);
+    
+    // Tornar funções utilitárias disponíveis globalmente
+    window.pFloat = pFloat;
+    window.clamp = clamp;
+    window.getEl = getEl;
 
-// Utilitários
-const pFloat = val => isNaN(val = parseFloat(val)) ? 0 : val;
-const clamp = (val, min = CONFIG.MIN_GRADE, max = CONFIG.MAX_GRADE) => Math.max(min, Math.min(max, pFloat(val)));
-const getEl = id => document.getElementById(id);
-
-// Tornar funções utilitárias disponíveis globalmente
-window.pFloat = pFloat;
-window.clamp = clamp;
-window.getEl = getEl;
-
-// Configuração da matéria
-const getSubjectConfig = (subject, year) => {
+    // Configuração da matéria
+    const getSubjectConfig = (subject, year) => {
         const config = SUBJECTS.find(s => s.value === subject) || SUBJECTS[0];
         return (year === CONFIG.SCHOOL_YEAR_EM3 && ['historia', 'geografia'].includes(subject)) 
             ? { ...config, usesAV2: true } : config;
-};
+    };
+    
+    // Tornar a função getSubjectConfig disponível globalmente
+    window.getSubjectConfig = getSubjectConfig;
 
-// Tornar a função getSubjectConfig disponível globalmente
-window.getSubjectConfig = getSubjectConfig;
-
-const calculateScore = (inputs, subject, year) => {
+    // Cálculo da nota trimestral
+    const calculateScore = (inputs, subject, year) => {
         const config = getSubjectConfig(subject, year);
         const weights = config.usesAV2 ? WEIGHTS.dualExam : WEIGHTS.standard;
         
@@ -157,11 +157,13 @@ const calculateScore = (inputs, subject, year) => {
         }
         
         return Math.max(0, weightedScores.reduce((a, b) => a + b) + clamp(inputs.bns));
-};
+    };
+    
+    // Tornar a função calculateScore disponível globalmente
+    window.calculateScore = calculateScore;
 
-window.calculateScore = calculateScore;
-
-const solveForX = (target, prefix) => {
+    // Resolver para X
+    const solveForX = (target, prefix) => {
         const bonus = clamp(getEl(`${prefix}_bns`)?.value || 0);
         const adjustedTarget = target - bonus;
         let fixedSum = 0, xCoeff = 0;
@@ -235,8 +237,9 @@ const solveForX = (target, prefix) => {
         
         return { x: (adjustedTarget - fixedSum) / xCoeff, message: null };
     };
-    
-const createTrimesterCard = trimNum => {
+
+    // Criar card de trimestre
+    const createTrimesterCard = trimNum => {
         const prefix = `t${trimNum}`;
         const labels = {
             at1: "AT1 (Atividade 1)", at2: "AT2 (Atividade 2)", at3: "AT3 (Atividade 3)",
@@ -282,9 +285,10 @@ const createTrimesterCard = trimNum => {
                 <div class="input-grid" id="${prefix}_detailed_inputs">${inputs}</div>
                 <div class="result">Média Trimestral ${trimNum}: <span id="${prefix}_result" aria-live="polite">-</span></div>
             </div>`;
-};
+    };
 
-const updateSubjectOptions = () => {
+    // Atualizar opções do seletor de matéria
+    const updateSubjectOptions = () => {
         const year = DOM.yearSelector.value;
         const current = DOM.subjectSelector.value;
         DOM.subjectSelector.innerHTML = '';
@@ -304,21 +308,25 @@ const updateSubjectOptions = () => {
         
         DOM.subjectSelector.value = Array.from(DOM.subjectSelector.options).some(opt => opt.value === current) 
             ? current : DOM.subjectSelector.options[0].value;
-};
+    };
 
-const updateFieldsVisibility = () => {
+    // Atualizar visibilidade dos campos
+    const updateFieldsVisibility = () => {
         const config = getSubjectConfig(DOM.subjectSelector.value, DOM.yearSelector.value);
         document.querySelectorAll('[data-grade-id="av2"]').forEach(group => {
             group.style.display = config.usesAV2 ? '' : 'none';
             if (!config.usesAV2) group.querySelector('input').value = '';
         });
-};
+    };
 
-const getInputs = prefix => Object.fromEntries(GRADES.map(id => [id, getEl(`${prefix}_${id}`)?.value || '']));
+    // Obter inputs de um trimestre
+    const getInputs = prefix => Object.fromEntries(GRADES.map(id => [id, getEl(`${prefix}_${id}`)?.value || '']));
+    
+    // Tornar a função getInputs disponível globalmente
+    window.getInputs = getInputs;
 
-window.getInputs = getInputs;
-
-const clearProjections = () => {
+    // Limpar projeções
+    const clearProjections = () => {
         // Limpar projeções de campos detalhados
         document.querySelectorAll('input.projected-grade:not(.is-fixed)').forEach(el => {
             el.value = '';
@@ -333,9 +341,10 @@ const clearProjections = () => {
                 directAverageInput.classList.remove('projected-grade');
             }
         });
-};
+    };
 
-const hasEmptyFields = prefix => {
+    // Verificar se trimestre tem campos vazios
+    const hasEmptyFields = prefix => {
         // Verificar se está usando média direta
         const useDirectAverage = document.getElementById(`${prefix}_use_direct_average`)?.checked;
         
@@ -351,9 +360,10 @@ const hasEmptyFields = prefix => {
                 return el && !el.classList.contains('is-fixed') && el.value === '';
             });
         }
-};
+    };
 
-const fillProjectedFields = (prefix, target) => {
+    // Preencher campos projetados
+    const fillProjectedFields = (prefix, target) => {
         const cardEl = getEl(`trim${prefix.substring(1)}_card`);
         const useDirectAverage = document.getElementById(`${prefix}_use_direct_average`)?.checked;
         
@@ -386,9 +396,10 @@ const fillProjectedFields = (prefix, target) => {
                 cardEl.dataset.projectionError = `Trimestre ${prefix.substring(1)}: ${result.message}`;
             }
         }
-};
+    };
 
-const getProjectionStrategy = () => {
+    // Estratégia de projeção
+    const getProjectionStrategy = () => {
         const goal = DOM.goalSelector.value;
         if (goal === 'pass_year') return { type: 'pass_year' };
         if (goal === 'custom') {
@@ -396,11 +407,13 @@ const getProjectionStrategy = () => {
             return { type: 'target', target: (val >= CONFIG.MIN_GRADE && val <= CONFIG.MAX_GRADE) ? val : CONFIG.DEFAULT_TARGET };
         }
         return { type: 'target', target: pFloat(goal) };
-};
+    };
+    
+    // Tornar a função getProjectionStrategy disponível globalmente
+    window.getProjectionStrategy = getProjectionStrategy;
 
-window.getProjectionStrategy = getProjectionStrategy;
-
-const applyProjections = strategy => {
+    // Aplicar projeções
+    const applyProjections = strategy => {
         if (strategy.type === 'pass_year') {
             let knownSum = 0, futureTrims = [];
             
@@ -424,9 +437,10 @@ const applyProjections = strategy => {
                 if (hasEmptyFields(prefix)) fillProjectedFields(prefix, strategy.target);
             });
         }
-};
+    };
 
-const getChartData = () => {
+    // Função para coletar dados para os gráficos e estatísticas
+    const getChartData = () => {
         const trimesterScores = [];
         const allGrades = [];
 
@@ -454,10 +468,11 @@ const getChartData = () => {
         });
 
         return { trimesterScores, allGrades };
-};
-window.getChartData = getChartData;
+    };
+    window.getChartData = getChartData; // Exportar para uso em outros scripts
 
-const updateStatistics = (trimesterScores, allGrades) => {
+    // Função para atualizar as estatísticas de texto
+    const updateStatistics = (trimesterScores, allGrades) => {
         const statAverageEl = document.getElementById('stat-average');
         const statHighestEl = document.getElementById('stat-highest');
         const statLowestEl = document.getElementById('stat-lowest');
@@ -506,10 +521,12 @@ const updateStatistics = (trimesterScores, allGrades) => {
         statLowestEl.textContent = lowest > 0 ? lowest.toFixed(2) : '-';
         statTrendEl.textContent = trend;
         statTrendEl.className = 'stat-value ' + trendClass;
-};
-window.updateStatistics = updateStatistics;
+    };
+    // Tornar a função de estatísticas global para ser chamada pelo charts.js
+    window.updateStatistics = updateStatistics;
 
-const updateResults = () => {
+    // Atualizar resultados
+    const updateResults = () => {
         let annualSum = 0, filledTrims = 0;
         const messages = [];
         
@@ -540,9 +557,10 @@ const updateResults = () => {
         if (analyticsSection && analyticsSection.style.display !== 'none' && window.Charts) {
             window.Charts.update(trimesterScoresForCharts, allGradesForCharts);
         }
-};
-
-const updateAnnualUI = (sum, filled, messages) => {
+    };
+    
+    // Atualizar UI anual
+    const updateAnnualUI = (sum, filled, messages) => {
         let status = '-';
         let statusClass = '';
 
@@ -616,9 +634,10 @@ const updateAnnualUI = (sum, filled, messages) => {
         DOM.projectionContent.innerHTML = messages.length 
             ? messages.map(msg => `<span>${msg}</span>`).join('')
             : '<span>Preencha as notas e clique em calcular.</span>';
-};
+    };
 
-const handleYearChange = () => {
+    // Handlers
+    const handleYearChange = () => {
         const year = DOM.yearSelector.value;
         if (year) {
             DOM.subjectContainer.classList.remove('hidden-subject-selector');
@@ -631,15 +650,17 @@ const handleYearChange = () => {
             DOM.subjectContainer.style.maxHeight = "0px";
             DOM.subjectContainer.classList.add('hidden-subject-selector');
         }
-};
-window.handleYearChange = handleYearChange;
+    };
+    window.handleYearChange = handleYearChange; // Exportar para uso global
 
-const handleSubjectChange = () => {
+    const handleSubjectChange = () => {
         updateFieldsVisibility();
         clearProjections();
         updateResults();
-};
-const handleGoalChange = () => {
+    };
+
+
+    const handleGoalChange = () => {
         if (DOM.goalSelector.value === 'custom') {
             DOM.customGoal.style.display = 'block';
             setTimeout(() => {
@@ -659,9 +680,9 @@ const handleGoalChange = () => {
             DOM.projectionContent.innerHTML = '<span>Preencha as notas e clique em calcular.</span>';
         }
         clearProjections();
-};
+    };
 
-const handleCalculation = () => {
+    const handleCalculation = () => {
         // Adicionar classe para efeito visual
         DOM.calculateAll.classList.add('btn-clicked');
         setTimeout(() => DOM.calculateAll.classList.remove('btn-clicked'), 300);
@@ -669,8 +690,9 @@ const handleCalculation = () => {
         clearProjections();
         applyProjections(getProjectionStrategy());
         updateResults();
-};
-const handleFixButton = e => {
+    };
+
+    const handleFixButton = e => {
         if (e.target.classList.contains('btn-fix')) {
             const input = getEl(e.target.dataset.targetInput);
             if (input) {
@@ -684,9 +706,9 @@ const handleFixButton = e => {
                 updateResults();
             }
         }
-};
+    };
 
-const clearAll = () => {
+    const clearAll = () => {
         // Adicionar classe para efeito visual
         DOM.clearAll.classList.add('btn-clicked');
         setTimeout(() => DOM.clearAll.classList.remove('btn-clicked'), 300);
@@ -735,21 +757,24 @@ const clearAll = () => {
         
         clearProjections();
         updateResults();
-};
-window.clearAll = clearAll;
+    };
+    window.clearAll = clearAll; // Exportar para uso global
 
-const initTheme = () => {
+    const initTheme = () => {
         const saved = localStorage.getItem(CONFIG.THEME_KEY);
         const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
         DOM.root.setAttribute('data-theme', saved || (prefersDark ? 'dark' : 'light'));
-};
-const toggleTheme = () => {
+    };
+
+    const toggleTheme = () => {
         const current = DOM.root.getAttribute('data-theme');
         const newTheme = current === 'light' ? 'dark' : 'light';
         DOM.root.setAttribute('data-theme', newTheme);
         localStorage.setItem(CONFIG.THEME_KEY, newTheme);
     };
-const toggleHowToUse = () => {
+
+    // Função para mostrar/esconder a seção "Como Usar"
+    const toggleHowToUse = () => {
         const section = DOM.howToUseSection;
         const isVisible = section.classList.toggle('show');
 
@@ -763,16 +788,18 @@ const toggleHowToUse = () => {
 
         // Salva o estado no localStorage
         localStorage.setItem(CONFIG.HOW_TO_USE_VISIBLE_KEY, isVisible ? 'open' : 'closed');
-};
+    };
 
-const initHowToUseState = () => {
+    // Função para inicializar o estado da seção "Como Usar"
+    const initHowToUseState = () => {
         if (localStorage.getItem(CONFIG.HOW_TO_USE_VISIBLE_KEY) === 'open') {
             DOM.howToUseSection.classList.add('show');
             DOM.howToUseSection.style.maxHeight = DOM.howToUseSection.scrollHeight + 'px';
         }
-};
+    };
 
-const saveDataToLocalStorage = () => {
+    // Funções para salvar e carregar dados
+    const saveDataToLocalStorage = () => {
         const data = {
             year: DOM.yearSelector.value,
             subject: DOM.subjectSelector.value,
@@ -796,9 +823,10 @@ const saveDataToLocalStorage = () => {
         });
         
         localStorage.setItem('calculadora_notas_data', JSON.stringify(data));
-};
-window.saveDataToLocalStorage = saveDataToLocalStorage;
-const loadDataFromLocalStorage = () => {
+    };
+    window.saveDataToLocalStorage = saveDataToLocalStorage; // Exportar para uso global
+    
+    const loadDataFromLocalStorage = () => {
         const savedData = localStorage.getItem('calculadora_notas_data');
         if (!savedData) return false;
         
@@ -863,12 +891,15 @@ const loadDataFromLocalStorage = () => {
             console.error('Erro ao carregar dados salvos:', e);
             return false;
         }
-};
+    };
 
-window.updateFieldsVisibility = updateFieldsVisibility;
-window.updateResults = updateResults;
+    // Exportar funções de UI para uso global (ex: sharing.js)
+    window.updateFieldsVisibility = updateFieldsVisibility;
+    window.updateResults = updateResults;
+    // clearAll, handleYearChange, saveDataToLocalStorage já foram exportadas acima.
 
-const toggleDirectAverage = (trimPrefix, checked) => {
+    // Função para alternar entre entrada detalhada e média direta
+    const toggleDirectAverage = (trimPrefix, checked) => {
         const directAverageContainer = document.getElementById(`${trimPrefix}_direct_average_container`);
         const detailedInputs = document.getElementById(`${trimPrefix}_detailed_inputs`);
         
@@ -904,13 +935,15 @@ const toggleDirectAverage = (trimPrefix, checked) => {
         
         // Forçar a atualização dos resultados anuais
         updateResults();
-};
-
-initTheme();
-initHowToUseState();
-DOM.trimestersWrapper.innerHTML = TRIMS.map((_, i) => createTrimesterCard(i + 1)).join('');
-
-const initializeResults = () => {
+    };
+    
+    // Inicialização
+    initTheme();
+    initHowToUseState(); // Inicializa o estado da seção "Como Usar"
+    DOM.trimestersWrapper.innerHTML = TRIMS.map((_, i) => createTrimesterCard(i + 1)).join('');
+    
+    // Função para garantir que os resultados estejam atualizados após a inicialização
+    const initializeResults = () => {
         // Verificar todos os campos de média direta
         TRIMS.forEach(prefix => {
             const useDirectAverage = document.getElementById(`${prefix}_use_direct_average`)?.checked;
@@ -926,11 +959,13 @@ const initializeResults = () => {
         
         // Atualizar os resultados anuais
         updateResults();
-};
-
-setTimeout(initializeResults, 100);
-
-TRIMS.forEach(prefix => {
+    };
+    
+    // Executar a inicialização após um pequeno atraso para garantir que todos os elementos estejam carregados
+    setTimeout(initializeResults, 100);
+    
+    // Adicionar event listeners para os toggles de média direta
+    TRIMS.forEach(prefix => {
         const checkbox = document.getElementById(`${prefix}_use_direct_average`);
         if (checkbox) {
             checkbox.addEventListener('change', (e) => {
@@ -940,11 +975,13 @@ TRIMS.forEach(prefix => {
         
         // O listener de 'input' no 'trimestersWrapper' agora lida com todas as atualizações de notas,
         // tornando os listeners individuais para os campos de média direta redundantes.
-});
-
-const dataLoaded = loadDataFromLocalStorage();
-
-if (dataLoaded) {
+    });
+    
+    // Tentar carregar dados salvos
+    const dataLoaded = loadDataFromLocalStorage();
+    
+    // Mostrar notificação se os dados foram carregados
+    if (dataLoaded) {
         setTimeout(() => {
             showToast('Suas notas salvas foram carregadas automaticamente!', 'success');
             
@@ -964,13 +1001,15 @@ if (dataLoaded) {
             // Forçar a atualização dos resultados
             updateResults();
         }, 1500);
-}
-
-const saveAfterChange = () => {
+    }
+    
+    // Função para salvar dados após alterações
+    const saveAfterChange = () => {
         setTimeout(saveDataToLocalStorage, 100);
-};
-
-const exportData = () => {
+    };
+    
+    // Funções para exportar e importar dados
+    const exportData = () => {
         const data = {
             year: DOM.yearSelector.value,
             subject: DOM.subjectSelector.value,
@@ -1011,9 +1050,9 @@ const exportData = () => {
             URL.revokeObjectURL(url);
             showToast('Dados exportados com sucesso!', 'success');
         }, 100);
-};
-
-const importData = () => {
+    };
+    
+    const importData = () => {
         const fileInput = document.getElementById('importFile');
         fileInput.click();
         
@@ -1101,10 +1140,11 @@ const importData = () => {
             
             reader.readAsText(file);
         };
-};
-
-DOM.themeToggle.addEventListener('click', toggleTheme);
-DOM.howToUseBtn.addEventListener('click', toggleHowToUse);
+    };
+    
+    // Event Listeners
+    DOM.themeToggle.addEventListener('click', toggleTheme);
+    DOM.howToUseBtn.addEventListener('click', toggleHowToUse);
     DOM.yearSelector.addEventListener('change', () => { handleYearChange(); saveAfterChange(); });
     DOM.subjectSelector.addEventListener('change', () => { handleSubjectChange(); saveAfterChange(); });
     DOM.goalSelector.addEventListener('change', () => { handleGoalChange(); saveAfterChange(); });
@@ -1127,12 +1167,16 @@ DOM.howToUseBtn.addEventListener('click', toggleHowToUse);
             saveAfterChange();
         }
     });
-
-document.getElementById('exportData').addEventListener('click', exportData);
-document.getElementById('importData').addEventListener('click', importData);
-document.getElementById('toggleAnalytics').addEventListener('click', window.Charts.toggle);
-
-document.getElementById('generateShareLink').addEventListener('click', () => {
+    
+    // Event listeners para exportar/importar
+    document.getElementById('exportData').addEventListener('click', exportData);
+    document.getElementById('importData').addEventListener('click', importData);
+    
+    // Event listeners para análise gráfica
+    document.getElementById('toggleAnalytics').addEventListener('click', window.Charts.toggle);
+    
+    // Event listeners para compartilhamento
+    document.getElementById('generateShareLink').addEventListener('click', () => {
         const link = window.Sharing.generateLink();
         if (link) {
             const shareLinkInput = document.getElementById('share-link-input');
@@ -1159,9 +1203,9 @@ document.getElementById('generateShareLink').addEventListener('click', () => {
                 qrCodeContainer.classList.add('show');
             }
         }
-});
+    });
 
-document.getElementById('copyShareLink').addEventListener('click', () => {
+    document.getElementById('copyShareLink').addEventListener('click', () => {
         const linkToCopy = document.getElementById('share-link-input').value;
         if (navigator.clipboard && window.isSecureContext) {
             navigator.clipboard.writeText(linkToCopy)
@@ -1185,8 +1229,15 @@ document.getElementById('copyShareLink').addEventListener('click', () => {
             }
             document.body.removeChild(tempInput);
         }
-});
+    });
 
-setTimeout(() => {
+    // Verificar se há dados compartilhados na URL
+    setTimeout(() => {
         window.Sharing.checkSharedData();
-}, 1000);
+    }, 1000);
+
+    // Inicializar o botão de exportação de PDF APÓS todo o script.js ter sido carregado e o DOM estar pronto
+    if (window.PDFExport && typeof window.PDFExport.initPdfExportButton === 'function') {
+        window.PDFExport.initPdfExportButton();
+    }
+});
